@@ -1,0 +1,15 @@
+{
+  "include": ["./**/*"],
+  "compilerOptions": {
+    "outDir": "./output",
+    "module": "esnext",
+    "target": "es5",
+    "declaration": true,
+    "lib": ["ES2020", "DOM"],
+    "sourceMap": false,
+    "rootDir": "./",
+    "strict": true,
+    "noEmit": true,
+    "noImplicitThis": true
+  }
+}
