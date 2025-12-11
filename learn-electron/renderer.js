@@ -13,6 +13,11 @@ const btn2 = document.getElementById('btn2')
 btn2.addEventListener('click', async () => {
   const content = contentInput.value
   const len = await window.electron.writeFile(content)
-  console.log("🚀 ~ btn2.addEventListener ~ len:", len)
+  console.log('🚀 ~ btn2.addEventListener ~ len:', len)
   info.innerHTML = `File Size: ${len} 个字符`
+})
+
+const counter = document.getElementById('counter')
+window.electron.onUpdateCounter((value) => {
+  counter.innerHTML = value.toString()
 })

@@ -42,7 +42,13 @@ async function handleWriteFile(event, content) {
 }
 
 app.whenReady().then(() => {
-  createWindow()
+  let counter = 1
+  const win = createWindow()
+  win.webContents.send('update-counter', counter)
+  setInterval(() => {
+    counter += 3
+    win.webContents.send('update-counter', counter)
+  }, 3000)
   // const parent = createWindow()
   // createSecondWindow(parent)
 
