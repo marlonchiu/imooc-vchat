@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 
 const createWindow = () => {
@@ -28,9 +28,18 @@ const createWindow = () => {
 //   win.loadFile('second.html')
 // }
 
+function handleSetTitle(event, title) {
+  console.log('handleSetTitle ~ event:', event)
+  const win = BrowserWindow.fromWebContents(event.sender)
+  win.setTitle(title)
+}
+
 app.whenReady().then(() => {
-  const parent = createWindow()
+  createWindow()
+  // const parent = createWindow()
   // createSecondWindow(parent)
+
+  ipcMain.on('set-title', handleSetTitle)
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
