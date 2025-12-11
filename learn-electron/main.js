@@ -7,6 +7,7 @@ const createWindow = () => {
     width: 800,
     height: 600,
     webPreferences: {
+      // 开启沙盒化
       nodeIntegration: true,
       preload: path.join(__dirname, 'preload.js')
     }
