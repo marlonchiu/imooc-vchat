@@ -36,3 +36,9 @@ npm install --save-dev @iconify/vue
 ```bash
 npm install radix-vue
 ```
+
+**7-1 安装并且使用 Vue Router**
+
+```bash
+npm install vue-router@4
+```
