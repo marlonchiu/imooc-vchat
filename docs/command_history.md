@@ -30,3 +30,9 @@ npm install tailwindcss @tailwindcss/vite
 ```bash
 npm install --save-dev @iconify/vue
 ```
+
+**6-7 安装和初次认识 Radix Vue**
+
+```bash
+npm install radix-vue
+```

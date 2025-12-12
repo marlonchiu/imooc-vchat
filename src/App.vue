@@ -19,7 +19,9 @@
         </button>
       </div>
     </div>
-    <div class="h-full flex-1">content</div>
+    <div class="h-full flex-1">
+      <ProviderSelect />
+    </div>
   </div>
 </template>
 
@@ -27,6 +29,7 @@
 import { Icon } from '@iconify/vue'
 import { ConversationProps } from './types'
 import ConversationList from './components/ConversationList.vue'
+import ProviderSelect from './components/ProviderSelect.vue'
 
 const items: ConversationProps[] = [
   {
