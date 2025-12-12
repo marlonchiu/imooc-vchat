@@ -1,21 +1,32 @@
 ## 历史操作命令
 
+**6-1 使用 Electron Forge 初始化项目**
+
 ```bash
 ## 使用 Electron Forge 初始化项目
 npx create-electron-app@latest vchat --template=vite-typescript
+```
 
-# 添加 vue3 支持
+**6-2 添加 vue3 支持**
+
+```bash
 npm install vue@latest
 npm install --save-dev @vitejs/plugin-vue@5.2.4 # 不要使用6.0.0 无法启动项目
+```
 
-# 介绍和安装 Tailwind.css
+**6-3 介绍和安装 Tailwind.css**
 
+```bash
 # 安装 tailwindcss V3
 npm install -D tailwindcss@3 postcss@latest autoprefixer@latest
 npx tailwindcss init -p
 
-
-#或者安装 tailwindcss V4
+#或者安装 tailwindcss V4(异常)
 npm install tailwindcss @tailwindcss/vite
+```
 
+**6-6 使用 Iconify 作为图标解决方案**
+
+```bash
+npm install --save-dev @iconify/vue
 ```
