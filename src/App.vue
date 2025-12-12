@@ -4,27 +4,23 @@
       <div class="h-[90%] overflow-y-auto">
         <ConversationList :items="conversations" />
       </div>
+
       <div class="h-[10%] grid grid-cols-2 gap-2 p-2">
         <RouterLink to="/">
-          <button
-            class="shadow-sm inline-flex items-center justify-center bg-green-700 text-white hover:bg-green-700/90 border border-green-700 h-[32px] py-[8px] px-[15px] text-sm rounded-[4px]"
-          >
+          <Button>
             <Icon icon="radix-icons:chat-bubble" class="mr-2"></Icon>
             新建聊天
-          </button>
+          </Button>
         </RouterLink>
         <RouterLink to="/settings">
-          <button
-            class="shadow-sm inline-flex items-center justify-center bg-green-50 text-green-700 hover:bg-green-700 border border-green-700 hover:text-white h-[32px] py-[8px] px-[15px] text-sm rounded-[4px]"
-          >
+          <Button plain>
             <Icon icon="radix-icons:gear" class="mr-2"></Icon>
             应用设置
-          </button>
+          </Button>
         </RouterLink>
       </div>
     </div>
     <div class="h-full flex-1">
-      <Button color="purple" plain>Hello there</Button>
       <RouterView />
     </div>
   </div>
