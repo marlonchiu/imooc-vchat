@@ -6,13 +6,13 @@
       v-for="item in items"
       :key="item.id"
     >
-      <a href="#">
+      <RouterLink to="/conversation">
         <div class="flex justify-between items-center text-sm leading-5 text-gray-500">
           <span>{{ item.selectedModel }}</span>
           <span>{{ item.updatedAt }}</span>
         </div>
         <h2 class="flex-1 font-semibold leading-6 text-gray-900 truncate">{{ item.title }}</h2>
-      </a>
+      </RouterLink>
     </div>
   </div>
 </template>
