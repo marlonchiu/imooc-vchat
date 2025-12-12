@@ -1,7 +1,8 @@
 import { app, BrowserWindow } from 'electron'
 import path from 'node:path'
 import started from 'electron-squirrel-startup'
-import { ChatCompletion, setEnvVariable } from '@baiducloud/qianfan'
+import { ChatCompletion } from '@baiducloud/qianfan'
+import 'dotenv/config'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -29,15 +30,18 @@ const createWindow = async () => {
   mainWindow.webContents.openDevTools()
 
   // 测试百度千帆
-  const accessKey = process.env.QIANFAN_ACCESS_KEY ?? ''
-  const secretKey = process.env.QIANFAN_SECRET_KEY ?? ''
-  // setEnvVariable('QIANFAN_ACCESS_KEY', accessKey)
-  // setEnvVariable('QIANFAN_SECRET_KEY', secretKey)
+  const accessKey = process.env.QIANFAN_ACCESS_KEY
+  const secretKey = process.env.QIANFAN_SECRET_KEY
+
+  if (!accessKey || !secretKey) {
+    console.error('❌ 环境变量未设置')
+    return
+  }
 
   const client = new ChatCompletion({
     QIANFAN_ACCESS_KEY: accessKey,
     QIANFAN_SECRET_KEY: secretKey,
-    ENABLE_OAUTH: false
+    ENABLE_OAUTH: true
   })
   const resp = await client.chat(
     {
