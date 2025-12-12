@@ -24,6 +24,7 @@
       </div>
     </div>
     <div class="h-full flex-1">
+      <Button color="purple" plain>Hello there</Button>
       <RouterView />
     </div>
   </div>
@@ -33,4 +34,5 @@
 import { Icon } from '@iconify/vue'
 import ConversationList from './components/ConversationList.vue'
 import { conversations } from './testData'
+import Button from './components/Button.vue'
 </script>
