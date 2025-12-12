@@ -20,19 +20,30 @@
       </div>
     </div>
     <div class="h-full flex-1 flex items-center">
-      <div class="w-[80%] mx-auto">
-        <ProviderSelect :items="providers" />
+      <div class="w-[80%] mx-auto h-full">
+        <div class="flex items-center h-[85%]">
+          <ProviderSelect :items="providers" v-model="selectedModel" />
+        </div>
+        <div class="flex items-center h-[15%]">
+          <MessageInput />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import { ConversationProps, ProviderProps } from './types'
 import ConversationList from './components/ConversationList.vue'
 import ProviderSelect from './components/ProviderSelect.vue'
+import MessageInput from './components/MessageInput.vue'
 
+// 选择的大模型
+const selectedModel = ref('')
+
+// 历史对话列表
 const items: ConversationProps[] = [
   {
     id: 1,
@@ -68,6 +79,7 @@ const items: ConversationProps[] = [
   }
 ]
 
+// 大模型选框
 const providers: ProviderProps[] = [
   {
     id: 1,
