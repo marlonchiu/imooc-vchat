@@ -42,3 +42,9 @@ npm install radix-vue
 ```bash
 npm install vue-router@4
 ```
+
+**8-2 初步使用文心一言调用 SDK**
+
+```bash
+npm install @baiducloud/qianfan
+```
