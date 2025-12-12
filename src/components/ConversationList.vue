@@ -6,7 +6,7 @@
       v-for="item in items"
       :key="item.id"
     >
-      <RouterLink to="/conversation">
+      <RouterLink :to="`/conversation/${item.id}`">
         <div class="flex justify-between items-center text-sm leading-5 text-gray-500">
           <span>{{ item.selectedModel }}</span>
           <span>{{ item.updatedAt }}</span>
@@ -20,8 +20,14 @@
 <script lang="ts" setup>
 defineOptions({ name: 'ConversationList' })
 
+import { useRouter } from 'vue-router'
 import { ConversationProps } from '../types'
 defineProps<{ items: ConversationProps[] }>()
+
+const router = useRouter()
+const goToConversation = (id: number) => {
+  router.push({ path: `/conversation/${id}`, query: { name: 'zq' }, hash: '#foo' })
+}
 </script>
 
 <style lang="scss" scoped></style>
