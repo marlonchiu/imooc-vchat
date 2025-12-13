@@ -28,3 +28,6 @@
 > [DashScope模型服务灵积/模型广场](https://dashscope.console.aliyun.com/model)
 > [百炼模型广场](https://bailian.console.aliyun.com/?tab=model#/model-market)
 > [OpenAI 兼容](https://bailian.console.aliyun.com/?tab=api#/api/?type=model&url=2712576)
+
+> [视觉理解（Qwen-VL）](https://help.aliyun.com/zh/model-studio/vision?spm=5176.28630291.0.0.24bf7eb5EayOOs&disableWebsiteRedirect=true#2c294798d3esy)
+> [传入本地文件（Base64 编码或文件路径））](https://help.aliyun.com/zh/model-studio/vision?spm=5176.28630291.0.0.24bf7eb5EayOOs&disableWebsiteRedirect=true#a63fbac15a8s8)
