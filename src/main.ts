@@ -4,6 +4,7 @@ import started from 'electron-squirrel-startup'
 import 'dotenv/config'
 import { CreateChatProps, UpdatedStreamData } from './types'
 import { ChatCompletion } from '@baiducloud/qianfan'
+import OpenAI from 'openai'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -26,8 +27,8 @@ const createWindow = async () => {
     const { providerName, selectedModel, content, messageId } = data
     if (providerName === 'qianfan') {
       _triggerQianfan({ selectedModel, content, messageId })
-    } else {
-      //
+    } else if (providerName === 'dashscope') {
+      _triggerBailian({ selectedModel, content, messageId })
     }
   })
 
@@ -42,7 +43,15 @@ const createWindow = async () => {
   mainWindow.webContents.openDevTools()
 }
 
-async function _triggerQianfan({ selectedModel, content, messageId }) {
+async function _triggerQianfan({
+  selectedModel,
+  content,
+  messageId
+}: {
+  selectedModel: string
+  content: string
+  messageId: number
+}) {
   const accessKey = process.env.QIANFAN_ACCESS_KEY
   const secretKey = process.env.QIANFAN_SECRET_KEY
 
@@ -70,6 +79,51 @@ async function _triggerQianfan({ selectedModel, content, messageId }) {
       data: {
         is_end,
         result
+      }
+    }
+
+    mainWindow.webContents.send('update-message', content)
+  }
+}
+
+async function _triggerBailian({
+  selectedModel,
+  content,
+  messageId
+}: {
+  selectedModel: string
+  content: string
+  messageId: number
+}) {
+  const apiKey = process.env.DASHSCOPE_API_KEY
+
+  if (!apiKey) {
+    console.error('❌ 环境变量未设置')
+    return
+  }
+  const openai = new OpenAI({
+    apiKey: apiKey,
+    baseURL: 'https://dashscope.aliyuncs.com/compatible-mode/v1'
+  })
+
+  const stream = await openai.chat.completions.create({
+    // 开通赠送1,000,000 有效期半年
+    // 此处以qwen-plus为例，可按需更换模型名称。模型列表：https://help.aliyun.com/zh/model-studio/getting-started/models
+    // 'qwen-turbo', 'qwen-flash'
+    model: selectedModel,
+    messages: [{ role: 'user', content: content }],
+    stream: true
+  })
+
+  for await (const chunk of stream as any) {
+    // 输出流式数据
+    console.log(chunk.choices[0])
+    const { finish_reason, delta } = chunk.choices[0]
+    const content: UpdatedStreamData = {
+      messageId,
+      data: {
+        is_end: finish_reason === 'stop' ? true : false,
+        result: delta.content
       }
     }
 
