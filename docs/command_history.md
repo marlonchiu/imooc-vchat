@@ -54,3 +54,9 @@ npm install @baiducloud/qianfan
 ```bash
 npm install openai dotenv
 ```
+
+**9-2 学习 Dexie.js 的基本用法**
+
+```bash
+npm install dexie
+```

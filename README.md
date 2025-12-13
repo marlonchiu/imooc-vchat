@@ -36,3 +36,9 @@
 >[长上下文（Qwen-Long）](https://help.aliyun.com/zh/model-studio/long-context-qwen-long?spm=5176.21213303.J_ZGek9Blx07Hclc3Ddt9dg.1.30db2f3dXwICrd&scm=20140722.S_help@@%E6%96%87%E6%A1%A3@@2846146._.ID_help@@%E6%96%87%E6%A1%A3@@2846146-RL_gwen~DAS~long~DAS~guick~DAS~star-LOC_2024SPHelpResult-OR_ser-PAR1_213e057617656123624265065ea2c2-V_4-PAR3_o-RE_new8-P0_0-P1_0)
 qwen-long是通义千问模型家族中，提供具备强大长文本处理能力的模型，最大可支持千万tokens的对话窗口，并通过与OpenAl兼容的模式提供API服务。
 >[OpenAI文件接口兼容 | 使用文件上传接口](https://help.aliyun.com/zh/model-studio/developer-reference/document-upload-openai-qwen-long)
+
+
+## Dexie
+
+> [Dexie.js](https://dexie.org/)
+> [Dexie.js Typescript](https://dexie.org/docs/typescript)

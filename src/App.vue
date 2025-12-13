@@ -27,8 +27,28 @@
 </template>
 
 <script lang="ts" setup>
+import { onMounted } from 'vue'
 import { Icon } from '@iconify/vue'
+import { conversations, providers } from './testData'
 import ConversationList from './components/ConversationList.vue'
-import { conversations } from './testData'
 import Button from './components/Button.vue'
+import { db } from './db'
+
+onMounted(async () => {
+  // 添加
+  const insertedId = await db.providers.add(providers[0])
+  console.log('insertedId', insertedId)
+
+  // 查询
+  // const items = await db.providers.where({ id: 1 }).toArray()
+  // console.log('items', items)
+
+  // 更新
+  // const updatedItem = await db.providers.update(1, { desc: 'updated desc' })
+  // console.log('updatedItem', updatedItem)
+
+  // 删除
+  // const deletedItem = await db.providers.delete(1)
+  // console.log('deletedItem', deletedItem)
+})
 </script>
