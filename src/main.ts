@@ -43,13 +43,23 @@ const createWindow = async () => {
     QIANFAN_SECRET_KEY: secretKey,
     ENABLE_OAUTH: true
   })
-  const resp = await client.chat(
+  const stream = await client.chat(
     {
-      messages: [{ role: 'user', content: '你好' }]
+      messages: [
+        // { role: 'user', content: '光合作用' }
+        { role: 'user', content: '你好' },
+        { role: 'assistant', content: '如果您有任何问题，请随时向我提问。' },
+        { role: 'user', content: '我在上海，周末可以去哪里玩？' },
+        { role: 'assistant', content: '上海是一个充满活力和文化氛围的城市，有很多适合周末游玩的地方。' },
+        { role: 'user', content: '周末这里的天气怎么样？' }
+      ],
+      stream: true
     },
     'ERNIE-Speed-128K'
   )
-  console.log('==百度千帆==', resp)
+  for await (const chunk of stream as any) {
+    console.log(chunk)
+  }
 }
 
 // This method will be called when Electron has finished
