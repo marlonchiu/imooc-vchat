@@ -48,3 +48,9 @@ npm install vue-router@4
 ```bash
 npm install @baiducloud/qianfan
 ```
+
+**8-4 学习使用阿里通义千问：了解 OpenAI SDK 的使用**
+
+```bash
+npm install openai dotenv
+```

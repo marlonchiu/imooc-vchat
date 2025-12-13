@@ -8,6 +8,7 @@
 > [Comparison of over 100 AI models from OpenAI, Google, DeepSeek & others](https://artificialanalysis.ai/leaderboards/models)
 
 ## 百度千帆
+
 > [百度千帆控制台](https://console.bce.baidu.com/qianfan/modelcenter/model/buildIn/list)
 > [千帆大模型服务与开发平台ModelBuilder](https://ai.baidu.com/ai-doc/WENXINWORKSHOP/vliu6vq7u)
 > [百度千帆·大模型服务及Agent开发平台模型列表](https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j)
@@ -18,3 +19,12 @@
 > [千帆大模型Token 计算器](https://console.bce.baidu.com/tools/#/tokenizer)
 > [导入Role(user+assistant)数据](https://ai.baidu.com/ai-doc/WENXINWORKSHOP/om1k634fe)
 > [Messages使用说明](https://ai.baidu.com/ai-doc/WENXINWORKSHOP/9m9cttnvs)
+
+## 阿里千问
+
+> [阿里云灵积(已经不支持开通，都转到百炼平台了)](https://dashscope.aliyun.com/)
+> [阿里云百炼](https://www.aliyun.com/product/bailian)
+>
+> [DashScope模型服务灵积/模型广场](https://dashscope.console.aliyun.com/model)
+> [百炼模型广场](https://bailian.console.aliyun.com/?tab=model#/model-market)
+> [OpenAI 兼容](https://bailian.console.aliyun.com/?tab=api#/api/?type=model&url=2712576)

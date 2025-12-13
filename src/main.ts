@@ -3,6 +3,7 @@ import path from 'node:path'
 import started from 'electron-squirrel-startup'
 import { ChatCompletion } from '@baiducloud/qianfan'
 import 'dotenv/config'
+import OpenAI from 'openai'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -30,6 +31,13 @@ const createWindow = async () => {
   mainWindow.webContents.openDevTools()
 
   // 测试百度千帆
+  // await testQianfan()
+
+  // 测试阿里百炼
+  await testBailian()
+}
+
+async function testQianfan() {
   const accessKey = process.env.QIANFAN_ACCESS_KEY
   const secretKey = process.env.QIANFAN_SECRET_KEY
 
@@ -46,12 +54,15 @@ const createWindow = async () => {
   const stream = await client.chat(
     {
       messages: [
+        { role: 'user', content: '你好' }
+
         // { role: 'user', content: '光合作用' }
-        { role: 'user', content: '你好' },
-        { role: 'assistant', content: '如果您有任何问题，请随时向我提问。' },
-        { role: 'user', content: '我在上海，周末可以去哪里玩？' },
-        { role: 'assistant', content: '上海是一个充满活力和文化氛围的城市，有很多适合周末游玩的地方。' },
-        { role: 'user', content: '周末这里的天气怎么样？' }
+
+        // { role: 'user', content: '你好' },
+        // { role: 'assistant', content: '如果您有任何问题，请随时向我提问。' },
+        // { role: 'user', content: '我在上海，周末可以去哪里玩？' },
+        // { role: 'assistant', content: '上海是一个充满活力和文化氛围的城市，有很多适合周末游玩的地方。' },
+        // { role: 'user', content: '周末这里的天气怎么样？' }
       ],
       stream: true
     },
@@ -60,6 +71,46 @@ const createWindow = async () => {
   for await (const chunk of stream as any) {
     console.log(chunk)
   }
+}
+
+async function testBailian() {
+  const apiKey = process.env.DASHSCOPE_API_KEY
+
+  if (!apiKey) {
+    console.error('❌ 环境变量未设置')
+    return
+  }
+  const openai = new OpenAI({
+    // 若没有配置环境变量，请用百炼API Key将下行替换为：apiKey: "sk-xxx",
+    apiKey: apiKey,
+    baseURL: 'https://dashscope.aliyuncs.com/compatible-mode/v1'
+  })
+
+  const resp = await openai.chat.completions.create({
+    // 开通赠送1,000,000 有效期半年
+    // 此处以qwen-plus为例，可按需更换模型名称。模型列表：https://help.aliyun.com/zh/model-studio/getting-started/models
+    // 'qwen-turbo', 'qwen-flash'
+    model: 'qwen-plus',
+    messages: [
+      // { role: 'system', content: 'You are a helpful assistant.' },
+      // { role: 'user', content: '你是谁？' }
+
+      // { role: 'system', content: '你现在是一个六岁的小孩，请模仿儿童可爱的口吻进行回答' },
+      // { role: 'user', content: '什么是光合作用？' }
+
+      { role: 'system', content: '你现在是一只卡通片里面的可爱小狗，请模仿汪汪队长的口吻进行回答' },
+      { role: 'user', content: '请问队长，老鼠为什么有害呢?' }
+    ]
+    // stream: true
+  })
+  console.log(JSON.stringify(resp))
+  console.log('resp', resp.choices[0].message)
+
+  // 流式输出
+  // for await (const chunk of resp as any) {
+  //   // 输出流式数据
+  //   console.log(chunk.choices[0].delta)
+  // }
 }
 
 // This method will be called when Electron has finished
