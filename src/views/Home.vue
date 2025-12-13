@@ -1,10 +1,10 @@
 <template>
   <div class="w-[80%] mx-auto h-full">
     <div class="flex items-center h-[85%]">
-      <ProviderSelect :items="providers" v-model="selectedModel" />
+      <ProviderSelect :items="providers" v-model="currentProvider" />
     </div>
     <div class="flex items-center h-[15%]">
-      <MessageInput />
+      <MessageInput @create="createConversation" />
     </div>
   </div>
 </template>
@@ -12,11 +12,50 @@
 <script lang="ts" setup>
 defineOptions({ name: 'Home' })
 
-import { ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import ProviderSelect from '../components/ProviderSelect.vue'
 import MessageInput from '../components/MessageInput.vue'
-import { providers } from '../testData'
+import { db } from '../db'
+import { ProviderProps } from '../types'
 
-// 选择的大模型
-const selectedModel = ref('')
+const router = useRouter()
+const currentProvider = ref('')
+const providers = ref<ProviderProps[]>([])
+
+onMounted(async () => {
+  providers.value = await db.providers.toArray()
+})
+
+const modelInfo = computed(() => {
+  const [providerId, selectedModel] = currentProvider.value.split('/')
+  return {
+    providerId: parseInt(providerId),
+    selectedModel
+  }
+})
+
+const createConversation = async (question: string) => {
+  const { providerId, selectedModel } = modelInfo.value
+
+  const currentDate = new Date().toISOString()
+
+  const conversationId = await db.conversations.add({
+    title: question,
+    selectedModel,
+    providerId,
+    createdAt: currentDate,
+    updatedAt: currentDate
+  })
+
+  const newMessageId = await db.messages.add({
+    content: question,
+    conversationId,
+    type: 'question',
+    createdAt: currentDate,
+    updatedAt: currentDate
+  })
+
+  router.push(`/conversation/${conversationId}?init=${newMessageId}`)
+}
 </script>
