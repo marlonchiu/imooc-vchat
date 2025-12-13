@@ -2,16 +2,18 @@ import { app, BrowserWindow, ipcMain } from 'electron'
 import path from 'node:path'
 import started from 'electron-squirrel-startup'
 import 'dotenv/config'
-import { CreateChatProps } from './types'
+import { CreateChatProps, UpdatedStreamData } from './types'
+import { ChatCompletion } from '@baiducloud/qianfan'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
   app.quit()
 }
 
+let mainWindow: BrowserWindow
 const createWindow = async () => {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1024,
     height: 768,
     webPreferences: {
@@ -19,8 +21,14 @@ const createWindow = async () => {
     }
   })
 
-  ipcMain.on('start-chat', async (event, content: CreateChatProps) => {
-    console.log('hey', content)
+  ipcMain.on('start-chat', async (event, data: CreateChatProps) => {
+    console.log('hey', data)
+    const { providerName, selectedModel, content, messageId } = data
+    if (providerName === 'qianfan') {
+      _triggerQianfan({ selectedModel, content, messageId })
+    } else {
+      //
+    }
   })
 
   // and load the index.html of the app.
@@ -32,6 +40,41 @@ const createWindow = async () => {
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools()
+}
+
+async function _triggerQianfan({ selectedModel, content, messageId }) {
+  const accessKey = process.env.QIANFAN_ACCESS_KEY
+  const secretKey = process.env.QIANFAN_SECRET_KEY
+
+  if (!accessKey || !secretKey) {
+    console.error('❌ 环境变量未设置')
+    return
+  }
+
+  const client = new ChatCompletion({
+    QIANFAN_ACCESS_KEY: accessKey,
+    QIANFAN_SECRET_KEY: secretKey,
+    ENABLE_OAUTH: true
+  })
+  const stream = await client.chat(
+    {
+      messages: [{ role: 'user', content: content }],
+      stream: true
+    },
+    selectedModel
+  )
+  for await (const chunk of stream as any) {
+    const { is_end, result } = chunk
+    const content: UpdatedStreamData = {
+      messageId,
+      data: {
+        is_end,
+        result
+      }
+    }
+
+    mainWindow.webContents.send('update-message', content)
+  }
 }
 
 // This method will be called when Electron has finished

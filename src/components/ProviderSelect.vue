@@ -13,7 +13,7 @@
             <div v-for="(provider, index) in items">
               <SelectLabel class="flex items-center px-6 h-7 text-gray-500">
                 <img :src="provider.avatar" :alt="provider.name" class="h-5 w-5 mr-2 rounded" />
-                {{ provider.name }}
+                {{ provider.title }}
               </SelectLabel>
               <SelectGroup>
                 <SelectItem

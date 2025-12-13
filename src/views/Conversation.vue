@@ -67,6 +67,10 @@ onMounted(async () => {
     console.log('🚀 ~ onMounted ~ lastMessage:', lastMessage)
     await creatingInitialMessage()
   }
+
+  window.electronAPI.onUpdateMessage(async (steamData) => {
+    console.log('onUpdateMessage', steamData)
+  })
 })
 
 watch(

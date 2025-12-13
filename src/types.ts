@@ -31,8 +31,18 @@ export interface MessageProps {
 }
 
 export interface CreateChatProps {
-  content: string;
-  providerName: string;
-  selectedModel: string;
-  messageId: number;
+  content: string
+  providerName: string
+  selectedModel: string
+  messageId: number
 }
+
+export interface UpdatedStreamData {
+  messageId: number
+  data: {
+    is_end: boolean
+    result: string
+  }
+}
+
+export type OnUpdatedCallback = (data: UpdatedStreamData) => void
