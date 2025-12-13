@@ -60,3 +60,9 @@ npm install openai dotenv
 ```bash
 npm install dexie
 ```
+
+**9-4 完成对话和信息的创建 第二部分**
+
+```bash
+npm install dayjs
+```

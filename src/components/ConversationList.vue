@@ -6,13 +6,13 @@
       v-for="item in items"
       :key="item.id"
     >
-      <RouterLink :to="`/conversation/${item.id}`">
+      <a @click.prevent="goToConversation(item.id)">
         <div class="flex justify-between items-center text-sm leading-5 text-gray-500">
           <span>{{ item.selectedModel }}</span>
-          <span>{{ item.updatedAt }}</span>
+          <span>{{ dayjs(item.updatedAt).format('YYYY-MM-DD') }}</span>
         </div>
         <h2 class="flex-1 font-semibold leading-6 text-gray-900 truncate">{{ item.title }}</h2>
-      </RouterLink>
+      </a>
     </div>
   </div>
 </template>
@@ -23,6 +23,7 @@ defineOptions({ name: 'ConversationList' })
 import { useRouter } from 'vue-router'
 import { ConversationProps } from '../types'
 defineProps<{ items: ConversationProps[] }>()
+import dayjs from 'dayjs'
 
 const router = useRouter()
 const goToConversation = (id: number) => {
