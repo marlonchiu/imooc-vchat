@@ -4,7 +4,8 @@ import started from 'electron-squirrel-startup'
 import { ChatCompletion } from '@baiducloud/qianfan'
 import 'dotenv/config'
 import OpenAI from 'openai'
-import fs from 'fs/promises'
+// import fs from 'fs/promises'
+import fs from 'fs'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -38,7 +39,10 @@ const createWindow = async () => {
   // await testBailian()
 
   // 测试千问VL 图文理解
-  await testQwenVL()
+  // await testQwenVL()
+
+  // 测试千问长文本上下文
+  await testQwenLong()
 }
 
 async function testQianfan() {
@@ -156,6 +160,37 @@ async function testQwenVL() {
   })
   // console.log(JSON.stringify(completion))
   console.log(completion.choices[0].message.content)
+}
+
+async function testQwenLong() {
+  const apiKey = process.env.DASHSCOPE_API_KEY
+
+  if (!apiKey) {
+    console.error('❌ 环境变量未设置')
+    return
+  }
+  const client = new OpenAI({
+    // 若没有配置环境变量，请用百炼API Key将下行替换为：apiKey: "sk-xxx",
+    apiKey: apiKey,
+    // 以下是北京地域base_url，如果使用新加坡地域的模型，需要将base_url替换为：https://dashscope-intl.aliyuncs.com/compatible-mode/v1
+    baseURL: 'https://dashscope.aliyuncs.com/compatible-mode/v1'
+  })
+
+  const fileObj = await client.files.create({
+    file: fs.createReadStream('D:/github_projects/imooc-vchat/src/assets/1.pdf'),
+    purpose: 'file-extract' as any
+  })
+
+  const resp = await client.chat.completions.create({
+    model: 'qwen-long',
+    messages: [
+      { role: 'system', content: 'You are a helpful assistant.' },
+      { role: 'system', content: `fileid://${fileObj.id}` },
+      { role: 'user', content: '请帮忙概括文件讲述了什么' }
+    ],
+    // stream: true
+  })
+  console.log(resp.choices[0].message)
 }
 
 // This method will be called when Electron has finished
