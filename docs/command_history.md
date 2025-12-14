@@ -84,3 +84,9 @@ npm install vue-markdown-render
 ```bash
 npm install -D @tailwindcss/typography
 ```
+
+**11-3 使用Highlight.js 完成语法高亮**
+
+```bash
+npm install highlight.js markdown-it-highlightjs
+```

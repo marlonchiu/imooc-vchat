@@ -4,6 +4,7 @@ import App from './App.vue'
 import router from './router'
 
 import './index.css'
+import 'highlight.js/styles/github-dark.min.css'
 
 const pinia = createPinia()
 
