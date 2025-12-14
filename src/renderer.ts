@@ -13,6 +13,7 @@ const routes = [
   { path: '/conversation/:id', component: Conversation },
   { path: '/settings', component: Settings }
 ]
+
 const router = createRouter({
   history: createMemoryHistory(),
   routes
@@ -21,4 +22,5 @@ const router = createRouter({
 const pinia = createPinia()
 
 const app = createApp(App)
+
 app.use(router).use(pinia).mount('#app')

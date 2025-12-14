@@ -19,6 +19,7 @@ export const useConversationStore = defineStore('conversation', {
       const items = await db.conversations.toArray()
       this.items = items
     },
+    // 创建新对话
     async createConversation(createdData: Omit<ConversationProps, 'id'>) {
       const newCId = await db.conversations.add(createdData)
       this.items.push({
