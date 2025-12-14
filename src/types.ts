@@ -30,8 +30,14 @@ export interface MessageProps {
   updatedAt: string
 }
 
-export interface CreateChatProps {
+export interface IMessage {
+  role: string
   content: string
+}
+
+export interface CreateChatProps {
+  // messages: { role: string; content: string }[]
+  messages: IMessage[]
   providerName: string
   selectedModel: string
   messageId: number

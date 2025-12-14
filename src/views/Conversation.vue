@@ -7,7 +7,7 @@
     <MessageList :messages="filteredMessages" />
   </div>
   <div class="w-[80%] mx-auto h-[15%] flex items-center">
-    <MessageInput />
+    <MessageInput v-model="inputValue" @create="sendNewMessage" />
   </div>
 </template>
 
@@ -27,13 +27,63 @@ import { useMessageStore } from '../stores/message'
 const messageStore = useMessageStore()
 
 const route = useRoute()
-
+const inputValue = ref('')
 let conversationId = ref(parseInt(route.params.id as string))
 const conversation = computed(() => conversationStore.getConversationById(conversationId.value))
 
 const initMessageId = parseInt(route.query.init as string)
 const filteredMessages = computed(() => messageStore.items)
-const lastQuestion = computed(() => messageStore.getLastQuestion(conversationId.value))
+
+const sendedMessages = computed(() =>
+  filteredMessages.value
+    .filter((message) => message.status !== 'loading')
+    .map((message) => {
+      return {
+        role: message.type === 'question' ? 'user' : 'assistant',
+        content: message.content
+      }
+    })
+)
+
+onMounted(async () => {
+  await messageStore.fetchMessagesByConversation(conversationId.value)
+
+  if (initMessageId) {
+    await creatingInitialMessage()
+  }
+
+  window.electronAPI.onUpdateMessage(async (streamData) => {
+    console.log('onUpdateMessage', streamData)
+    messageStore.updateMessage(streamData)
+  })
+})
+
+watch(
+  () => route.params.id,
+  async (newId: string) => {
+    conversationId.value = parseInt(newId)
+    await messageStore.fetchMessagesByConversation(conversationId.value)
+  }
+)
+
+// 发送提问
+const sendNewMessage = async (question: string) => {
+  if (question) {
+    const currentDate = new Date().toISOString()
+    const createdData: Omit<MessageProps, 'id'> = {
+      content: question,
+      conversationId: conversationId.value,
+      createdAt: currentDate,
+      updatedAt: currentDate,
+      type: 'question'
+    }
+
+    await messageStore.createMessage(createdData)
+
+    inputValue.value = ''
+    creatingInitialMessage()
+  }
+}
 
 const creatingInitialMessage = async () => {
   const currentDate = new Date().toISOString()
@@ -55,30 +105,9 @@ const creatingInitialMessage = async () => {
         messageId: newMessageId,
         providerName: provider.name,
         selectedModel: conversation.value.selectedModel,
-        content: lastQuestion.value?.content || ''
+        messages: sendedMessages.value
       })
     }
   }
 }
-
-onMounted(async () => {
-  await messageStore.fetchMessagesByConversation(conversationId.value)
-
-  if (initMessageId) {
-    await creatingInitialMessage()
-  }
-
-  window.electronAPI.onUpdateMessage(async (streamData) => {
-    // console.log('onUpdateMessage', streamData)
-    messageStore.updateMessage(streamData)
-  })
-})
-
-watch(
-  () => route.params.id,
-  async (newId: string) => {
-    conversationId.value = parseInt(newId)
-    await messageStore.fetchMessagesByConversation(conversationId.value)
-  }
-)
 </script>

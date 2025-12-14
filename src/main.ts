@@ -2,7 +2,7 @@ import { app, BrowserWindow, ipcMain } from 'electron'
 import path from 'node:path'
 import started from 'electron-squirrel-startup'
 import 'dotenv/config'
-import { CreateChatProps, UpdatedStreamData } from './types'
+import { CreateChatProps, UpdatedStreamData, IMessage } from './types'
 import { ChatCompletion } from '@baiducloud/qianfan'
 import OpenAI from 'openai'
 
@@ -24,11 +24,11 @@ const createWindow = async () => {
 
   ipcMain.on('start-chat', async (event, data: CreateChatProps) => {
     console.log('hey', data)
-    const { providerName, selectedModel, content, messageId } = data
+    const { providerName, selectedModel, messages, messageId } = data
     if (providerName === 'qianfan') {
-      _triggerQianfan({ selectedModel, content, messageId })
+      _triggerQianfan({ selectedModel, messages, messageId })
     } else if (providerName === 'dashscope') {
-      _triggerBailian({ selectedModel, content, messageId })
+      _triggerBailian({ selectedModel, messages, messageId })
     }
   })
 
@@ -45,11 +45,11 @@ const createWindow = async () => {
 
 async function _triggerQianfan({
   selectedModel,
-  content,
+  messages,
   messageId
 }: {
   selectedModel: string
-  content: string
+  messages: IMessage[]
   messageId: number
 }) {
   const accessKey = process.env.QIANFAN_ACCESS_KEY
@@ -67,7 +67,7 @@ async function _triggerQianfan({
   })
   const stream = await client.chat(
     {
-      messages: [{ role: 'user', content: content }],
+      messages: messages as any,
       stream: true
     },
     selectedModel
@@ -88,11 +88,11 @@ async function _triggerQianfan({
 
 async function _triggerBailian({
   selectedModel,
-  content,
+  messages,
   messageId
 }: {
   selectedModel: string
-  content: string
+  messages: IMessage[]
   messageId: number
 }) {
   const apiKey = process.env.DASHSCOPE_API_KEY
@@ -111,7 +111,7 @@ async function _triggerBailian({
     // 此处以qwen-plus为例，可按需更换模型名称。模型列表：https://help.aliyun.com/zh/model-studio/getting-started/models
     // 'qwen-turbo', 'qwen-flash'
     model: selectedModel,
-    messages: [{ role: 'user', content: content }],
+    messages: messages as any,
     stream: true
   })
 
