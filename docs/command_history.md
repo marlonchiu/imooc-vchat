@@ -78,3 +78,9 @@ npm install pinia
 ```bash
 npm install vue-markdown-render
 ```
+
+**11-2 添加 Tailwind Typography 插件**
+
+```bash
+npm install -D @tailwindcss/typography
+```

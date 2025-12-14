@@ -13,10 +13,9 @@
             <template v-if="message.status === 'loading'">
               <Icon icon="eos-icons:three-dots-loading"></Icon>
             </template>
-            <template v-else>
+            <div v-else class="prose prose-slate prose-headings:my-2 prose-li:my-0 prose-ul:my-1 prose-p:my-1">
               <vue-markdown :source="message.content" />
-              <!-- {{ message.content }} -->
-            </template>
+            </div>
           </div>
         </div>
       </div>
