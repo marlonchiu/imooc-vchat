@@ -56,9 +56,23 @@ onMounted(async () => {
     await creatingInitialMessage()
   }
 
+  // 优化滚动 只有内容高度变化了时 才滚动
+  let currentMessageListHeight = 0
+  const checkAndScrollToBottom = async () => {
+    if (messageListRef.value) {
+      const newHeight = messageListRef.value.ref.clientHeight
+      if (newHeight > currentMessageListHeight) {
+        currentMessageListHeight = newHeight
+        await messageScrollToBottom()
+      }
+    }
+  }
+
   window.electronAPI.onUpdateMessage(async (streamData) => {
     console.log('onUpdateMessage', streamData)
     messageStore.updateMessage(streamData)
+    await nextTick()
+    checkAndScrollToBottom()
   })
 })
 
@@ -101,6 +115,7 @@ const creatingInitialMessage = async () => {
     status: 'loading'
   }
   const newMessageId = await messageStore.createMessage(createdData)
+  await messageScrollToBottom()
 
   if (conversation.value) {
     const provider = providerStore.getProviderById(conversation.value.providerId)
