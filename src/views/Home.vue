@@ -12,23 +12,20 @@
 <script lang="ts" setup>
 defineOptions({ name: 'Home' })
 
-import { onMounted, ref, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import ProviderSelect from '../components/ProviderSelect.vue'
 import MessageInput from '../components/MessageInput.vue'
 import { db } from '../db'
-import { ProviderProps } from '../types'
 
 import { useConversationStore } from '../stores/conversation'
 const conversationStore = useConversationStore()
+import { useProviderStore } from '../stores/provider'
+const providerStore = useProviderStore()
 
 const router = useRouter()
 const currentProvider = ref('')
-const providers = ref<ProviderProps[]>([])
-
-onMounted(async () => {
-  providers.value = await db.providers.toArray()
-})
+const providers = computed(() => providerStore.items)
 
 const modelInfo = computed(() => {
   const [providerId, selectedModel] = currentProvider.value.split('/')
@@ -58,7 +55,7 @@ const createConversation = async (question: string) => {
     createdAt: currentDate,
     updatedAt: currentDate
   })
-
+  conversationStore.selectedId = conversationId
   router.push(`/conversation/${conversationId}?init=${newMessageId}`)
 }
 </script>

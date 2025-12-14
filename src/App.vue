@@ -26,12 +26,17 @@ import ConversationList from './components/ConversationList.vue'
 import Button from './components/Button.vue'
 import { initProviders } from './db'
 import { useConversationStore } from './stores/conversation'
+import { useProviderStore } from './stores/provider'
 
 const conversationStore = useConversationStore()
 const items = computed(() => conversationStore.items)
 
+const providerStore = useProviderStore()
+
 onMounted(async () => {
   await initProviders()
+  // 获取初始化需要的数据
+  providerStore.fetchProviders()
   conversationStore.fetchConversations()
 })
 </script>

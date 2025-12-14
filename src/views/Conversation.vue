@@ -25,6 +25,8 @@ import { useConversationStore } from '../stores/conversation'
 const conversationStore = useConversationStore()
 import { useMessageStore } from '../stores/message'
 const messageStore = useMessageStore()
+import { useProviderStore } from '../stores/provider'
+const providerStore = useProviderStore()
 
 const route = useRoute()
 const inputValue = ref('')
@@ -99,7 +101,7 @@ const creatingInitialMessage = async () => {
   const newMessageId = await messageStore.createMessage(createdData)
 
   if (conversation.value) {
-    const provider = await db.providers.where({ id: conversation.value.providerId }).first()
+    const provider = providerStore.getProviderById(conversation.value.providerId)
     if (provider) {
       console.log('~~~~~provider', provider)
       await window.electronAPI.startChat({
