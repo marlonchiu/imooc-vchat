@@ -72,3 +72,9 @@ npm install dayjs
 ```bash
 npm install pinia
 ```
+
+**11-1 渲染 Markdown 文本**
+
+```bash
+npm install vue-markdown-render
+```

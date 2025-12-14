@@ -42,3 +42,9 @@ qwen-long是通义千问模型家族中，提供具备强大长文本处理能�
 
 > [Dexie.js](https://dexie.org/)
 > [Dexie.js Typescript](https://dexie.org/docs/typescript)
+
+
+## markdown解析
+
+> [markdown-it](https://github.com/markdown-it/markdown-it)
+> [vue-markdown-render](https://github.com/cloudacy/vue-markdown-render)
