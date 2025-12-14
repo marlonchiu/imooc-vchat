@@ -19,6 +19,9 @@ import MessageInput from '../components/MessageInput.vue'
 import { db } from '../db'
 import { ProviderProps } from '../types'
 
+import { useConversationStore } from '../stores/conversation'
+const conversationStore = useConversationStore()
+
 const router = useRouter()
 const currentProvider = ref('')
 const providers = ref<ProviderProps[]>([])
@@ -40,7 +43,7 @@ const createConversation = async (question: string) => {
 
   const currentDate = new Date().toISOString()
 
-  const conversationId = await db.conversations.add({
+  const conversationId = await conversationStore.createConversation({
     title: question,
     selectedModel,
     providerId,

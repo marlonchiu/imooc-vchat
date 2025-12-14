@@ -31,7 +31,7 @@ import { onMounted, computed } from 'vue'
 import { Icon } from '@iconify/vue'
 import ConversationList from './components/ConversationList.vue'
 import Button from './components/Button.vue'
-import { db, initProviders } from './db'
+import { initProviders } from './db'
 import { useConversationStore } from './stores/conversation'
 
 const conversationStore = useConversationStore()
@@ -39,6 +39,6 @@ const items = computed(() => conversationStore.items)
 
 onMounted(async () => {
   await initProviders()
-  conversationStore.items = await db.conversations.toArray()
+  conversationStore.fetchConversations()
 })
 </script>
