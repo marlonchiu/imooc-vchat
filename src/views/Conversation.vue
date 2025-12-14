@@ -4,7 +4,7 @@
     <span class="text-sm text-gray-500">{{ dayjs(conversation.updatedAt).format('YYYY-MM-DD') }}</span>
   </div>
   <div class="w-[80%] mx-auto h-[75%] overflow-y-auto pt-2">
-    <MessageList :messages="filteredMessages" />
+    <MessageList :messages="filteredMessages" ref="messageListRef" />
   </div>
   <div class="w-[80%] mx-auto h-[15%] flex items-center">
     <MessageInput v-model="inputValue" @create="sendNewMessage" :disabled="isMessageLoading" />
@@ -14,12 +14,11 @@
 <script lang="ts" setup>
 defineOptions({ name: 'Conversation' })
 
-import { ref, watch, onMounted, computed } from 'vue'
+import { ref, watch, onMounted, computed, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import MessageInput from '../components/MessageInput.vue'
 import MessageList from '../components/MessageList.vue'
-import { MessageProps } from '../types'
-import { db } from '../db'
+import { MessageProps, MessageListInstance } from '../types'
 import dayjs from 'dayjs'
 import { useConversationStore } from '../stores/conversation'
 const conversationStore = useConversationStore()
@@ -37,6 +36,8 @@ const initMessageId = parseInt(route.query.init as string)
 const filteredMessages = computed(() => messageStore.items)
 const isMessageLoading = computed(() => messageStore.isMessageLoading)
 
+const messageListRef = ref<MessageListInstance>()
+
 const sendedMessages = computed(() =>
   filteredMessages.value
     .filter((message) => message.status !== 'loading')
@@ -50,7 +51,7 @@ const sendedMessages = computed(() =>
 
 onMounted(async () => {
   await messageStore.fetchMessagesByConversation(conversationId.value)
-
+  await messageScrollToBottom()
   if (initMessageId) {
     await creatingInitialMessage()
   }
@@ -66,6 +67,7 @@ watch(
   async (newId: string) => {
     conversationId.value = parseInt(newId)
     await messageStore.fetchMessagesByConversation(conversationId.value)
+    await messageScrollToBottom()
   }
 )
 
@@ -111,6 +113,14 @@ const creatingInitialMessage = async () => {
         messages: sendedMessages.value
       })
     }
+  }
+}
+
+// 自动滚动到信息的最下方
+const messageScrollToBottom = async () => {
+  await nextTick()
+  if (messageListRef.value) {
+    messageListRef.value.ref.scrollIntoView({ block: 'end', behavior: 'smooth' })
   }
 }
 </script>
