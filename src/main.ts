@@ -117,7 +117,7 @@ async function _triggerBailian({
 
   for await (const chunk of stream as any) {
     // 输出流式数据
-    console.log(chunk.choices[0])
+    // console.log(chunk.choices[0])
     const { finish_reason, delta } = chunk.choices[0]
     const content: UpdatedStreamData = {
       messageId,

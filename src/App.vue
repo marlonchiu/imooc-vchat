@@ -2,7 +2,7 @@
   <div class="flex items-center justify-between h-screen">
     <div class="bg-gray-200 w-[300px] h-full border-r border-gray-300">
       <div class="h-[90%] overflow-y-auto">
-        <ConversationList :items="conversations" />
+        <ConversationList :items="items" />
       </div>
 
       <div class="h-[10%] grid grid-cols-2 gap-2 p-2">
@@ -27,17 +27,18 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, computed } from 'vue'
 import { Icon } from '@iconify/vue'
 import ConversationList from './components/ConversationList.vue'
 import Button from './components/Button.vue'
 import { db, initProviders } from './db'
-import { ConversationProps } from './types'
+import { useConversationStore } from './stores/conversation'
 
-const conversations = ref<ConversationProps[]>([])
+const conversationStore = useConversationStore()
+const items = computed(() => conversationStore.items)
 
 onMounted(async () => {
   await initProviders()
-  conversations.value = await db.conversations.toArray()
+  conversationStore.items = await db.conversations.toArray()
 })
 </script>

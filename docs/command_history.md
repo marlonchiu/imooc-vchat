@@ -66,3 +66,9 @@ npm install dexie
 ```bash
 npm install dayjs
 ```
+
+**10-1 什么是Pinia 以及 State 基础概念**
+
+```bash
+npm install pinia
+```
