@@ -5,13 +5,15 @@ import { db } from '../db'
 // 定义接口 ConversationStore, items:属性, ConversationProps:类型
 export interface ConversationStore {
   items: ConversationProps[]
+  selectedId: number
 }
 
 // 创建 conversation store
 export const useConversationStore = defineStore('conversation', {
   state: (): ConversationStore => {
     return {
-      items: []
+      items: [],
+      selectedId: -1
     }
   },
   actions: {

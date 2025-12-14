@@ -7,16 +7,10 @@
 
       <div class="h-[10%] grid grid-cols-2 gap-2 p-2">
         <RouterLink to="/">
-          <Button>
-            <Icon icon="radix-icons:chat-bubble" class="mr-2"></Icon>
-            新建聊天
-          </Button>
+          <Button icon-name="radix-icons:chat-bubble" class="w-full"> 新建聊天 </Button>
         </RouterLink>
         <RouterLink to="/settings">
-          <Button plain>
-            <Icon icon="radix-icons:gear" class="mr-2"></Icon>
-            应用设置
-          </Button>
+          <Button icon-name="radix-icons:gear" plain class="w-full"> 应用设置 </Button>
         </RouterLink>
       </div>
     </div>
@@ -28,7 +22,6 @@
 
 <script lang="ts" setup>
 import { onMounted, computed } from 'vue'
-import { Icon } from '@iconify/vue'
 import ConversationList from './components/ConversationList.vue'
 import Button from './components/Button.vue'
 import { initProviders } from './db'

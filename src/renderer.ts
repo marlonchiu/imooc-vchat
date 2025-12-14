@@ -1,26 +1,12 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
+import router from './router'
 
-import { createRouter, createMemoryHistory } from 'vue-router'
-import Home from './views/Home.vue'
-import Conversation from './views/Conversation.vue'
-import Settings from './views/Settings.vue'
 import './index.css'
-
-const routes = [
-  { path: '/', component: Home },
-  { path: '/conversation/:id', component: Conversation },
-  { path: '/settings', component: Settings }
-]
-
-const router = createRouter({
-  history: createMemoryHistory(),
-  routes
-})
 
 const pinia = createPinia()
 
 const app = createApp(App)
 
-app.use(router).use(pinia).mount('#app')
+app.use(pinia).use(router).mount('#app')
