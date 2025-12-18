@@ -6,6 +6,7 @@ import { CreateChatProps, UpdatedStreamData, IMessage } from './types'
 import { ChatCompletion } from '@baiducloud/qianfan'
 import OpenAI from 'openai'
 import fs from 'fs/promises'
+import { convertMessages } from './helper'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -36,10 +37,11 @@ const createWindow = async () => {
   ipcMain.on('start-chat', async (event, data: CreateChatProps) => {
     console.log('hey', data)
     const { providerName, selectedModel, messages, messageId } = data
+    const convertedMessages = await convertMessages(messages)
     if (providerName === 'qianfan') {
-      _triggerQianfan({ selectedModel, messages, messageId })
+      _triggerQianfan({ selectedModel, messages: convertedMessages, messageId })
     } else if (providerName === 'dashscope') {
-      _triggerBailian({ selectedModel, messages, messageId })
+      _triggerBailian({ selectedModel, messages: convertedMessages, messageId })
     }
   })
 
@@ -60,7 +62,7 @@ async function _triggerQianfan({
   messageId
 }: {
   selectedModel: string
-  messages: IMessage[]
+  messages: any
   messageId: number
 }) {
   const accessKey = process.env.QIANFAN_ACCESS_KEY
@@ -103,7 +105,7 @@ async function _triggerBailian({
   messageId
 }: {
   selectedModel: string
-  messages: IMessage[]
+  messages: any
   messageId: number
 }) {
   const apiKey = process.env.DASHSCOPE_API_KEY

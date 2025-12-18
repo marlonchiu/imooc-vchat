@@ -90,3 +90,10 @@ npm install -D @tailwindcss/typography
 ```bash
 npm install highlight.js markdown-it-highlightjs
 ```
+
+**11-8 添加图片处理第三部分**
+
+```bash
+npm install mime-types
+npm install -D @types/mime-types
+```

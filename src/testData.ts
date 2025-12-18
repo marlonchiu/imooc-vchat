@@ -19,7 +19,7 @@ export const providers: ProviderProps[] = [
     title: '阿里百炼',
     desc: '通义千问',
     // https://help.aliyun.com/zh/dashscope/developer-reference/api-details?spm=a2c4g.11186623.0.0.5bf41507xgULX5#b148acc634pfc
-    models: ['qwen-turbo', 'qwen-plus', 'qwen-max'],
+    models: ['qwen-turbo', 'qwen-plus', 'qwen-max', 'qwen-vl-plus'],
     // avatar: 'https://qph.cf2.poecdn.net/main-thumb-pb-3004-50-jougqzjtwfqfyqprxbdwofvnwattmtrg.jpeg',
     avatar: 'https://img.alicdn.com/imgextra/i4/O1CN01Slt9qq1Q0CmLAG9MK_!!6000000001913-55-tps-32-32.svg',
     createdAt: '2025-07-03',

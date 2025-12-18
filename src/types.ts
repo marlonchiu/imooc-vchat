@@ -34,6 +34,7 @@ export interface MessageProps {
 export interface IMessage {
   role: string
   content: string
+  imagePath?: string
 }
 
 export interface CreateChatProps {
