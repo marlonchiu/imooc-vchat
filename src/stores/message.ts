@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { MessageProps, UpdatedStreamData, MessageStatus } from '../types'
+import { MessageProps } from '../types'
 import { db } from '../db'
 
 export interface MessageStore {
@@ -22,21 +22,12 @@ export const useMessageStore = defineStore('message', {
       this.items.push({ id: newMessageId, ...createdData })
       return newMessageId
     },
-    async updateMessage(streamData: UpdatedStreamData) {
-      const { messageId, data } = streamData
-      const currentMessage = this.items.find((item) => item.id === messageId)
-      if (currentMessage) {
-        const updatedData = {
-          status: data.is_end ? 'finished' : ('streaming' as MessageStatus),
-          updatedAt: new Date().toISOString(),
-          ...(!data.is_end && { content: currentMessage.content + data.result })
-        }
-
-        await db.messages.update(messageId, updatedData)
-        const index = this.items.findIndex((item) => item.id === messageId)
-        if (index !== -1) {
-          this.items[index] = { ...this.items[index], ...updatedData }
-        }
+    // Partial 设置任何字段可选
+    async updateMessage(messageId: number, updatedData: Partial<MessageProps>) {
+      await db.messages.update(messageId, updatedData)
+      const index = this.items.findIndex((item) => item.id === messageId)
+      if (index !== -1) {
+        this.items[index] = { ...this.items[index], ...updatedData }
       }
     }
   },

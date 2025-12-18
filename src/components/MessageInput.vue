@@ -72,6 +72,8 @@ const handleImageUpload = (event: Event) => {
 const onCreate = () => {
   if (model.value && model.value.trim() !== '') {
     emit('create', model.value, selectedImage?.path || undefined)
+    selectedImage = null
+    imagePreview.value = ''
   }
 }
 </script>

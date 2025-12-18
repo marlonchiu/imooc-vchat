@@ -18,7 +18,7 @@ import { ref, watch, onMounted, computed, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import MessageInput from '../components/MessageInput.vue'
 import MessageList from '../components/MessageList.vue'
-import { MessageProps, MessageListInstance } from '../types'
+import { MessageProps, MessageListInstance, MessageStatus } from '../types'
 import dayjs from 'dayjs'
 import { useConversationStore } from '../stores/conversation'
 const conversationStore = useConversationStore()
@@ -59,6 +59,7 @@ onMounted(async () => {
 
   // 优化滚动 只有内容高度变化了时 才滚动
   let currentMessageListHeight = 0
+  let streamContent = ''
   const checkAndScrollToBottom = async () => {
     if (messageListRef.value) {
       const newHeight = messageListRef.value.ref.clientHeight
@@ -71,9 +72,20 @@ onMounted(async () => {
 
   window.electronAPI.onUpdateMessage(async (streamData) => {
     console.log('onUpdateMessage', streamData)
-    messageStore.updateMessage(streamData)
+    const { messageId, data } = streamData
+    streamContent += data.result
+    const updatedData = {
+      content: streamContent,
+      status: data.is_end ? 'finished' : ('streaming' as MessageStatus),
+      updatedAt: new Date().toISOString()
+    }
+
+    await messageStore.updateMessage(messageId, updatedData)
     await nextTick()
-    checkAndScrollToBottom()
+    await checkAndScrollToBottom()
+    if (data.is_end) {
+      streamContent = ''
+    }
   })
 })
 
@@ -87,15 +99,25 @@ watch(
 )
 
 // 发送提问
-const sendNewMessage = async (question: string) => {
+const sendNewMessage = async (question: string, imagePath?: string) => {
   if (question) {
+    let copiedImagePath: string | undefined
+    if (imagePath) {
+      try {
+        copiedImagePath = await window.electronAPI.copyImageToUserDir(imagePath)
+        console.log('copiedImagePath', copiedImagePath)
+      } catch (error) {
+        console.error('Failed to copy image:', error)
+      }
+    }
     const currentDate = new Date().toISOString()
     const createdData: Omit<MessageProps, 'id'> = {
       content: question,
       conversationId: conversationId.value,
       createdAt: currentDate,
       updatedAt: currentDate,
-      type: 'question'
+      type: 'question',
+      ...(copiedImagePath && { imagePath: copiedImagePath })
     }
 
     await messageStore.createMessage(createdData)
