@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow, ipcMain, protocol, net } from 'electron'
 import path from 'node:path'
 import started from 'electron-squirrel-startup'
 import 'dotenv/config'
@@ -7,6 +7,8 @@ import { ChatCompletion } from '@baiducloud/qianfan'
 import OpenAI from 'openai'
 import fs from 'fs/promises'
 import { convertMessages } from './helper'
+import url from 'url'
+import { lookup } from 'mime-types'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -22,6 +24,22 @@ const createWindow = async () => {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }
+  })
+
+  // 创建一个协议
+  protocol.handle('safe-file', async (request) => {
+    const filePath = decodeURIComponent(request.url.slice('safe-file://'.length))
+
+    const newFilePath = url.pathToFileURL(filePath).toString()
+    return net.fetch(newFilePath)
+
+    // const data = await fs.readFile(filePath)
+    // return new Response(data, {
+    //   status: 200,
+    //   headers: {
+    //     'Content-Type': lookup(filePath) as string
+    //   }
+    // })
   })
 
   ipcMain.handle('copy-image-to-user-dir', async (event, sourcePath: string) => {
