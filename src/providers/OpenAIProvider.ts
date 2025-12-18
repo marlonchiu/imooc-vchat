@@ -18,6 +18,12 @@ export class OpenAIProvider extends BaseProvider {
       messages: messages as any,
       stream: true
     })
-    return stream
+    return {
+      async *[Symbol.asyncIterator]() {
+        for await (const chunk of stream) {
+          yield chunk
+        }
+      }
+    }
   }
 }
