@@ -5,6 +5,7 @@ import 'dotenv/config'
 import { CreateChatProps, UpdatedStreamData, IMessage } from './types'
 import { ChatCompletion } from '@baiducloud/qianfan'
 import OpenAI from 'openai'
+import fs from 'fs/promises'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -20,6 +21,16 @@ const createWindow = async () => {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }
+  })
+
+  ipcMain.handle('copy-image-to-user-dir', async (event, sourcePath: string) => {
+    const userDataPath = app.getPath('userData')
+    const imagesDir = path.join(userDataPath, 'images')
+    await fs.mkdir(imagesDir, { recursive: true })
+    const fileName = path.basename(sourcePath)
+    const destPath = path.join(imagesDir, fileName)
+    await fs.copyFile(sourcePath, destPath)
+    return destPath
   })
 
   ipcMain.on('start-chat', async (event, data: CreateChatProps) => {

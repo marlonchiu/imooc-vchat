@@ -5,8 +5,11 @@
     </div>
     <div class="flex items-center">
       <input type="file" accept="image/*" ref="fileInput" class="hidden" @change="handleImageUpload" />
+
+      <!-- icon显示不出来 -->
+      <!-- icon="radix-icons:image" -->
       <Icon
-        icon="radix-icons:image"
+        icon="radix-icons:chat-bubble"
         width="24"
         height="24"
         :class="[
@@ -39,7 +42,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  create: [value: string]
+  create: [value: string, imagePath?: string]
 }>()
 
 const model = defineModel<string>()
@@ -52,10 +55,11 @@ const triggerFileInput = () => {
   }
 }
 
+let selectedImage: File | null = null
 const handleImageUpload = (event: Event) => {
   const target = event.target as HTMLInputElement
   if (target.files && target.files.length > 0) {
-    const selectedImage = target.files[0]
+    selectedImage = target.files[0]
     console.log('🚀 ~ handleImageUpload ~ selectedImage:', selectedImage)
     const reader = new FileReader()
     reader.onload = (e) => {
@@ -67,7 +71,7 @@ const handleImageUpload = (event: Event) => {
 
 const onCreate = () => {
   if (model.value && model.value.trim() !== '') {
-    emit('create', model.value)
+    emit('create', model.value, selectedImage?.path || undefined)
   }
 }
 </script>
