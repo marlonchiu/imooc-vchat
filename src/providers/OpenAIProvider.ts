@@ -1,6 +1,7 @@
 import OpenAI from 'openai'
 import { BaseProvider } from './BaseProvider'
 import { ChatMessageProps, UniversalChunkProps } from '../types'
+import { convertMessages } from '../helper'
 
 export class OpenAIProvider extends BaseProvider {
   private client: OpenAI
@@ -13,9 +14,10 @@ export class OpenAIProvider extends BaseProvider {
   }
 
   async chat(messages: ChatMessageProps[], model: string) {
+    const convertedMessages = await convertMessages(messages)
     const stream = await this.client.chat.completions.create({
       model,
-      messages: messages as any,
+      messages: convertedMessages as any,
       stream: true
     })
 

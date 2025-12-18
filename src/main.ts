@@ -2,13 +2,10 @@ import { app, BrowserWindow, ipcMain, protocol, net } from 'electron'
 import path from 'node:path'
 import started from 'electron-squirrel-startup'
 import 'dotenv/config'
-import { CreateChatProps, UpdatedStreamData } from './types'
-import { ChatCompletion } from '@baiducloud/qianfan'
-import OpenAI from 'openai'
+import { CreateChatProps } from './types'
 import fs from 'fs/promises'
-import { convertMessages } from './helper'
 import url from 'url'
-import { lookup } from 'mime-types'
+import { createProvider } from './providers/createProvider'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -29,17 +26,8 @@ const createWindow = async () => {
   // 创建一个协议
   protocol.handle('safe-file', async (request) => {
     const filePath = decodeURIComponent(request.url.slice('safe-file://'.length))
-
     const newFilePath = url.pathToFileURL(filePath).toString()
     return net.fetch(newFilePath)
-
-    // const data = await fs.readFile(filePath)
-    // return new Response(data, {
-    //   status: 200,
-    //   headers: {
-    //     'Content-Type': lookup(filePath) as string
-    //   }
-    // })
   })
 
   ipcMain.handle('copy-image-to-user-dir', async (event, sourcePath: string) => {
@@ -55,11 +43,14 @@ const createWindow = async () => {
   ipcMain.on('start-chat', async (event, data: CreateChatProps) => {
     console.log('hey', data)
     const { providerName, selectedModel, messages, messageId } = data
-    const convertedMessages = await convertMessages(messages)
-    if (providerName === 'qianfan') {
-      _triggerQianfan({ selectedModel, messages: convertedMessages, messageId })
-    } else if (providerName === 'dashscope') {
-      _triggerBailian({ selectedModel, messages: convertedMessages, messageId })
+    const provider = createProvider(providerName)
+    const stream = await provider.chat(messages, selectedModel)
+    for await (const chunk of stream) {
+      const content = {
+        messageId,
+        data: chunk
+      }
+      mainWindow.webContents.send('update-message', content)
     }
   })
 
@@ -72,94 +63,6 @@ const createWindow = async () => {
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools()
-}
-
-async function _triggerQianfan({
-  selectedModel,
-  messages,
-  messageId
-}: {
-  selectedModel: string
-  messages: any
-  messageId: number
-}) {
-  const accessKey = process.env.QIANFAN_ACCESS_KEY
-  const secretKey = process.env.QIANFAN_SECRET_KEY
-
-  if (!accessKey || !secretKey) {
-    console.error('❌ 环境变量未设置')
-    return
-  }
-
-  const client = new ChatCompletion({
-    QIANFAN_ACCESS_KEY: accessKey,
-    QIANFAN_SECRET_KEY: secretKey,
-    ENABLE_OAUTH: true
-  })
-  const stream = await client.chat(
-    {
-      messages: messages as any,
-      stream: true
-    },
-    selectedModel
-  )
-  for await (const chunk of stream as any) {
-    const { is_end, result } = chunk
-    const content: UpdatedStreamData = {
-      messageId,
-      data: {
-        is_end,
-        result
-      }
-    }
-
-    mainWindow.webContents.send('update-message', content)
-  }
-}
-
-async function _triggerBailian({
-  selectedModel,
-  messages,
-  messageId
-}: {
-  selectedModel: string
-  messages: any
-  messageId: number
-}) {
-  const apiKey = process.env.DASHSCOPE_API_KEY
-
-  if (!apiKey) {
-    console.error('❌ 环境变量未设置')
-    return
-  }
-  const openai = new OpenAI({
-    apiKey: apiKey,
-    baseURL: 'https://dashscope.aliyuncs.com/compatible-mode/v1'
-  })
-
-  const stream = await openai.chat.completions.create({
-    // 开通赠送1,000,000 有效期半年
-    // 此处以qwen-plus为例，可按需更换模型名称。模型列表：https://help.aliyun.com/zh/model-studio/getting-started/models
-    // 'qwen-turbo', 'qwen-flash'
-    model: selectedModel,
-    messages: messages as any,
-    stream: true
-  })
-
-  for await (const chunk of stream as any) {
-    // 输出流式数据
-    // console.log(chunk.choices[0])
-    const { finish_reason, delta } = chunk.choices[0]
-    const content: UpdatedStreamData = {
-      messageId,
-      data: {
-        is_end: finish_reason === 'stop' ? true : false,
-        result: delta.content
-      }
-    }
-
-    mainWindow.webContents.send('update-message', content)
-  }
 }
 
 // This method will be called when Electron has finished
