@@ -1,6 +1,6 @@
 import OpenAI from 'openai'
 import { BaseProvider } from './BaseProvider'
-import { ChatMessageProps } from '../types'
+import { ChatMessageProps, UniversalChunkProps } from '../types'
 
 export class OpenAIProvider extends BaseProvider {
   private client: OpenAI
@@ -18,12 +18,22 @@ export class OpenAIProvider extends BaseProvider {
       messages: messages as any,
       stream: true
     })
+
+    const self = this
     return {
       async *[Symbol.asyncIterator]() {
         for await (const chunk of stream) {
-          yield chunk
+          yield self.transformResponse(chunk)
         }
       }
+    }
+  }
+
+  protected transformResponse(chunk: OpenAI.Chat.Completions.ChatCompletionChunk): UniversalChunkProps {
+    const choice = chunk.choices[0]
+    return {
+      is_end: choice.finish_reason === 'stop',
+      result: choice.delta.content || ''
     }
   }
 }
