@@ -52,5 +52,5 @@ export const providerConfigs: Record<string, ProviderConfigItem[]> = {
   qianfan: qianfanConfig,
   dashscope: apiKeyBaseUrlConfig,
   deepseek: apiKeyBaseUrlConfig,
-  openai: apiKeyBaseUrlConfig
+  gptfree: apiKeyBaseUrlConfig
 }
