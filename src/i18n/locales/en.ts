@@ -3,7 +3,9 @@ export default {
     title: 'Settings',
     language: 'Language',
     fontSize: 'Font Size',
-    selectLanguage: 'Select Language...'
+    selectLanguage: 'Select Language...',
+    general: 'General',
+    models: 'Models'
   },
   common: {
     send: 'Send',
