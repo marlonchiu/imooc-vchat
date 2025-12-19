@@ -83,14 +83,26 @@ const createWindow = async () => {
   ipcMain.on('start-chat', async (event, data: CreateChatProps) => {
     console.log('hey', data)
     const { providerName, selectedModel, messages, messageId } = data
-    const provider = createProvider(providerName)
-    const stream = await provider.chat(messages, selectedModel)
-    for await (const chunk of stream) {
-      const content = {
-        messageId,
-        data: chunk
+    try {
+      const provider = createProvider(providerName)
+      const stream = await provider.chat(messages, selectedModel)
+      for await (const chunk of stream) {
+        const content = {
+          messageId,
+          data: chunk
+        }
+        mainWindow.webContents.send('update-message', content)
       }
-      mainWindow.webContents.send('update-message', content)
+    } catch (error) {
+      const errorContent = {
+        messageId,
+        data: {
+          is_end: true,
+          result: error instanceof Error ? error.message : '与AI服务通信时发生错误',
+          is_error: true
+        }
+      }
+      mainWindow.webContents.send('update-message', errorContent)
     }
   })
 

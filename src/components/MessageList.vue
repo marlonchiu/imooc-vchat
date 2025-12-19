@@ -15,9 +15,19 @@
             />
             {{ message.content }}
           </div>
-          <div class="message-question bg-gray-200 text-gray-700 p-2 rounded-md" v-else>
+          <div
+            v-else
+            class="message-question p-2 rounded-md"
+            :class="{
+              'bg-red-100 text-red-700': message.status === 'error',
+              'bg-gray-200 text-gray-700': message.status !== 'error'
+            }"
+          >
             <template v-if="message.status === 'loading'">
               <Icon icon="eos-icons:three-dots-loading"></Icon>
+            </template>
+            <template v-else-if="message.status === 'error'">
+              <span>{{message.content}}</span>
             </template>
             <!-- prose-pre:p-0 去除代码块的边距 -->
             <div
