@@ -35,6 +35,17 @@ export const providers: ProviderProps[] = [
     avatar: 'https://cdn.deepseek.com/platform/favicon.png',
     createdAt: '2025-12-01',
     updatedAt: '2025-12-01'
+  },
+  {
+    id: 4,
+    name: 'gptfree',
+    title: 'GPT-free',
+    desc: 'GPT-API-free / DeepSeek-API-free',
+    // https://github.com/chatanywhere/GPT_API_free
+    models: ['deepseek-v3', 'gpt-5-mini'],
+    avatar: 'https://github.com/chatanywhere/GPT_API_free/raw/main/images/logo.png',
+    createdAt: '2025-12-19',
+    updatedAt: '2025-12-19'
   }
 ]
 

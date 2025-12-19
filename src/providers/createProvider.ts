@@ -17,6 +17,8 @@ export function createProvider(providerName: string): BaseProvider {
       )
     case 'deepseek':
       return new OpenAIProvider(process.env['DEEPSEEK_API_KEY'] as string, 'https://api.deepseek.com/v1')
+    case 'gptfree':
+      return new OpenAIProvider(process.env['GPT_FREE_API_KEY'] as string, 'https://api.chatanywhere.tech/v1')
     default:
       throw new Error(`Unsupported provider: ${providerName}`)
   }

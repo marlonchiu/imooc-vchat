@@ -3,8 +3,10 @@
 > [慕课网 | Al助手Cursor辅助 Vue3.5+Electron+ 大模型跨平台实战](https://coding.imooc.com/class/921.html)
 > [https://github.com/marlonchiu/imooc-vchat](https://github.com/marlonchiu/imooc-vchat)
 > [参考源码 https://github.com/linkgeek/vchat](https://github.com/linkgeek/vchat)
+> [参考API GPT_API_free](https://github.com/chatanywhere/GPT_API_free)
 
 ## 大模型列表
+
 > [中国大模型列表 Awesome LLMs In China](https://github.com/wgwang/awesome-LLMs-In-China)
 > [Comparison of over 100 AI models from OpenAI, Google, DeepSeek & others](https://artificialanalysis.ai/leaderboards/models)
 
@@ -33,17 +35,14 @@
 > [视觉理解（Qwen-VL）](https://help.aliyun.com/zh/model-studio/vision?spm=5176.28630291.0.0.24bf7eb5EayOOs&disableWebsiteRedirect=true#2c294798d3esy)
 > [传入本地文件（Base64 编码或文件路径））](https://help.aliyun.com/zh/model-studio/vision?spm=5176.28630291.0.0.24bf7eb5EayOOs&disableWebsiteRedirect=true#a63fbac15a8s8)
 
->
->[长上下文（Qwen-Long）](https://help.aliyun.com/zh/model-studio/long-context-qwen-long?spm=5176.21213303.J_ZGek9Blx07Hclc3Ddt9dg.1.30db2f3dXwICrd&scm=20140722.S_help@@%E6%96%87%E6%A1%A3@@2846146._.ID_help@@%E6%96%87%E6%A1%A3@@2846146-RL_gwen~DAS~long~DAS~guick~DAS~star-LOC_2024SPHelpResult-OR_ser-PAR1_213e057617656123624265065ea2c2-V_4-PAR3_o-RE_new8-P0_0-P1_0)
-qwen-long是通义千问模型家族中，提供具备强大长文本处理能力的模型，最大可支持千万tokens的对话窗口，并通过与OpenAl兼容的模式提供API服务。
->[OpenAI文件接口兼容 | 使用文件上传接口](https://help.aliyun.com/zh/model-studio/developer-reference/document-upload-openai-qwen-long)
-
+> [长上下文（Qwen-Long）](https://help.aliyun.com/zh/model-studio/long-context-qwen-long?spm=5176.21213303.J_ZGek9Blx07Hclc3Ddt9dg.1.30db2f3dXwICrd&scm=20140722.S_help@@%E6%96%87%E6%A1%A3@@2846146._.ID_help@@%E6%96%87%E6%A1%A3@@2846146-RL_gwen~DAS~long~DAS~guick~DAS~star-LOC_2024SPHelpResult-OR_ser-PAR1_213e057617656123624265065ea2c2-V_4-PAR3_o-RE_new8-P0_0-P1_0)
+> qwen-long是通义千问模型家族中，提供具备强大长文本处理能力的模型，最大可支持千万tokens的对话窗口，并通过与OpenAl兼容的模式提供API服务。
+> [OpenAI文件接口兼容 | 使用文件上传接口](https://help.aliyun.com/zh/model-studio/developer-reference/document-upload-openai-qwen-long)
 
 ## Dexie
 
 > [Dexie.js](https://dexie.org/)
 > [Dexie.js Typescript](https://dexie.org/docs/typescript)
-
 
 ## markdown解析
 
