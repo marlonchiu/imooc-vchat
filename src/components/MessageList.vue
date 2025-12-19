@@ -22,7 +22,7 @@
             <!-- prose-pre:p-0 去除代码块的边距 -->
             <div
               v-else
-              class="prose prose-slate prose-headings:my-2 prose-li:my-0 prose-ul:my-1 prose-p:my-1 prose-pre:p-0"
+              class="prose prose-slate prose-headings:my-2 prose-li:my-0 prose-ul:my-1 prose-p:my-1 prose-pre:p-0 prose-hr:m-4"
             >
               <vue-markdown :source="message.content" :plugins="plugins" />
             </div>

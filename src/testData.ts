@@ -10,8 +10,8 @@ export const providers: ProviderProps[] = [
     models: ['ERNIE-Speed-8K', 'ERNIE-lite-8K', 'ERNIE-Speed-128K'],
     // avatar: 'https://qph.cf2.poecdn.net/main-thumb-pb-3004-50-jougqzjtwfqfyqprxbdwofvnwattmtrg.jpeg',
     avatar: 'https://aip-static.cdn.bcebos.com/landing/product/ernie-bote321e5.png',
-    createdAt: '2025-07-03',
-    updatedAt: '2025-07-03'
+    createdAt: '2025-07-14',
+    updatedAt: '2025-07-14'
   },
   {
     id: 2,
@@ -22,8 +22,19 @@ export const providers: ProviderProps[] = [
     models: ['qwen-turbo', 'qwen-plus', 'qwen-max', 'qwen-vl-plus'],
     // avatar: 'https://qph.cf2.poecdn.net/main-thumb-pb-3004-50-jougqzjtwfqfyqprxbdwofvnwattmtrg.jpeg',
     avatar: 'https://img.alicdn.com/imgextra/i4/O1CN01Slt9qq1Q0CmLAG9MK_!!6000000001913-55-tps-32-32.svg',
-    createdAt: '2025-07-03',
-    updatedAt: '2025-07-03'
+    createdAt: '2025-07-14',
+    updatedAt: '2025-07-14'
+  },
+  {
+    id: 3,
+    name: 'deepseek',
+    title: 'DeepSeek',
+    desc: '深度求索',
+    // https://api-docs.deepseek.com/zh-cn/
+    models: ['deepseek-chat', 'deepseek-reasoner'],
+    avatar: 'https://cdn.deepseek.com/platform/favicon.png',
+    createdAt: '2025-12-01',
+    updatedAt: '2025-12-01'
   }
 ]
 
