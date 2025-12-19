@@ -25,7 +25,7 @@
         v-model="model"
       />
 
-      <Button icon-name="radix-icons:paper-plane" :disabled="disabled" @click="onCreate"> 发送 </Button>
+      <Button icon-name="radix-icons:paper-plane" :disabled="disabled" @click="onCreate">{{ t('common.send') }}</Button>
     </div>
   </div>
 </template>
@@ -36,6 +36,8 @@ defineOptions({ name: 'MessageInput' })
 import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import Button from '../components/Button.vue'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 const props = defineProps<{
   disabled?: boolean

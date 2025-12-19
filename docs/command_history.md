@@ -97,3 +97,9 @@ npm install highlight.js markdown-it-highlightjs
 npm install mime-types
 npm install -D @types/mime-types
 ```
+
+**12-5 使用 Cursor Composer 开发国际化功能**
+
+```bash
+npm install vue-i18n@next
+```
