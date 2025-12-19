@@ -63,7 +63,7 @@ const handleImageUpload = (event: Event) => {
     console.log('🚀 ~ handleImageUpload ~ selectedImage:', selectedImage)
     const reader = new FileReader()
     reader.onload = (e) => {
-      imagePreview.value = e.target?.result as string
+      imagePreview.value = e.target?.result as string // base64
     }
     reader.readAsDataURL(selectedImage)
   }
@@ -71,7 +71,15 @@ const handleImageUpload = (event: Event) => {
 
 const onCreate = () => {
   if (model.value && model.value.trim() !== '') {
-    emit('create', model.value, selectedImage?.path || undefined)
+    // emit 子组件向父组件传递数据或触发事件，最新版的 File 对象移除了 path属性
+    // emit('create', model.value, selectedImage?.path || undefined)
+    if (selectedImage) {
+      const filePath = window.electronAPI.getFilePath(selectedImage)
+      console.log('🚀 ~ origin ~ filePath:', filePath)
+      emit('create', model.value, filePath)
+    } else {
+      emit('create', model.value)
+    }
     selectedImage = null
     imagePreview.value = ''
   }
