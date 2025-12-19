@@ -12,6 +12,19 @@ if (started) {
   app.quit()
 }
 
+// 注册特权协议，可以绕过内容安全策略。处理 windows 系统拦截 protocol 自定义协议无效问题
+protocol.registerSchemesAsPrivileged([
+  {
+    scheme: 'safe-file', //自定义协议名称 safe-file://
+    privileges: {
+      // 赋予这个协议的权限
+      standard: true, // 允许像标准协议一样使用
+      secure: true, // 启用安全上下文（类似 HTTPS）
+      supportFetchAPI: true // 允许在渲染进程中使用 fetch API 访问此协议
+    }
+  }
+])
+
 let mainWindow: BrowserWindow
 const createWindow = async () => {
   // Create the browser window.
@@ -25,9 +38,20 @@ const createWindow = async () => {
 
   // 创建一个协议
   protocol.handle('safe-file', async (request) => {
-    const filePath = decodeURIComponent(request.url.slice('safe-file://'.length))
-    const newFilePath = url.pathToFileURL(filePath).toString()
-    return net.fetch(newFilePath)
+    // const filePath = decodeURIComponent(request.url.slice('safe-file://'.length))
+    // const newFilePath = url.pathToFileURL(filePath).toString()
+    // return net.fetch(newFilePath)
+
+    const userDataPath = app.getPath('userData')
+    const imageDir = path.join(userDataPath, 'images')
+    // 去除协议头 safe-file://，解码 URL 中的路径
+    const filePath = path.join(decodeURIComponent(request.url.slice('safe-file:/'.length)))
+    const filename = path.basename(filePath)
+    const userFilePath = path.join(imageDir, filename)
+    // 转换为 file:// URL
+    const newFilePath = url.pathToFileURL(userFilePath).toString()
+    // 使用 net.fetch 加载本地文件
+    return await net.fetch(newFilePath)
   })
 
   ipcMain.handle('copy-image-to-user-dir', async (event, sourcePath: string) => {

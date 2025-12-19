@@ -1,6 +1,8 @@
 import fs from 'fs/promises'
 import { lookup } from 'mime-types'
 import { ChatMessageProps } from './types'
+
+// message 转换
 export async function convertMessages(messages: ChatMessageProps[]) {
   const convertedMessages = []
 
