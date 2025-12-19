@@ -5,6 +5,7 @@ import 'dotenv/config'
 import { CreateChatProps } from './types'
 import fs from 'fs/promises'
 import url from 'url'
+import util from 'util'
 import { createProvider } from './providers/createProvider'
 import { configManager } from './config'
 
@@ -29,7 +30,8 @@ protocol.registerSchemesAsPrivileged([
 let mainWindow: BrowserWindow
 const createWindow = async () => {
   // 初始化配置
-  await configManager.load()
+  const config = await configManager.load()
+  console.log('config:', util.inspect(config, { depth: null, colors: true }))
 
   // Create the browser window.
   mainWindow = new BrowserWindow({

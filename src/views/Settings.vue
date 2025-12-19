@@ -107,28 +107,21 @@
             </AccordionTrigger>
             <AccordionContent class="p-4 pt-0">
               <div class="space-y-4">
-                <div class="flex items-center gap-4">
-                  <label class="text-sm font-medium text-gray-700 w-24">Access Key</label>
+                <div
+                  v-for="config in getProviderConfig(provider.name)"
+                  :key="config.key"
+                  class="flex items-center gap-4"
+                >
+                  <label class="text-sm font-medium text-gray-700 w-24">{{ config.label }}</label>
                   <input
-                    type="text"
+                    :type="config.type"
+                    :placeholder="config.placeholder"
+                    :required="config.required"
+                    :value="config.value"
+                    @input="
+                      (e) => updateProviderConfig(provider.name, config.key, (e.target as HTMLInputElement).value)
+                    "
                     class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-green-500"
-                    placeholder="abcd"
-                  />
-                </div>
-                <div class="flex items-center gap-4">
-                  <label class="text-sm font-medium text-gray-700 w-24">Secret Key</label>
-                  <input
-                    type="password"
-                    class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-green-500"
-                    placeholder="abcd"
-                  />
-                </div>
-                <div class="flex items-center gap-4">
-                  <label class="text-sm font-medium text-gray-700 w-24">Base URL</label>
-                  <input
-                    type="text"
-                    class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-green-500"
-                    placeholder="abcd"
                   />
                 </div>
               </div>
@@ -148,6 +141,7 @@ import { Icon } from '@iconify/vue'
 import { AppConfig } from '../types'
 
 import { useProviderStore } from '../stores/provider'
+import { providerConfigs, ProviderConfigItem } from '../config/providerConfig'
 import {
   SelectContent,
   SelectGroup,
@@ -183,7 +177,8 @@ const providers = computed(() => providerStore.items)
 
 const currentConfig = reactive<AppConfig>({
   language: 'zh',
-  fontSize: 14
+  fontSize: 14,
+  providerConfigs: {}
 })
 
 onMounted(async () => {
@@ -195,13 +190,36 @@ onMounted(async () => {
 watch(
   currentConfig,
   async (newConfig) => {
-    await window.electronAPI.updateConfig({
+    const configToSave = {
       language: newConfig.language,
-      fontSize: newConfig.fontSize
-    })
+      fontSize: newConfig.fontSize,
+      providerConfigs: JSON.parse(JSON.stringify(newConfig.providerConfigs))
+    }
+    await window.electronAPI.updateConfig(configToSave)
     // 更新界面语言
     setI18nLanguage(newConfig.language)
   },
   { deep: true }
 )
+
+// 获取provider对应的配置项
+const getProviderConfig = (providerName: string): ProviderConfigItem[] => {
+  const configs = providerConfigs[providerName] || []
+  // 确保配置值被初始化
+  if (!currentConfig.providerConfigs[providerName]) {
+    currentConfig.providerConfigs[providerName] = {}
+  }
+  return configs.map((config) => ({
+    ...config,
+    value: currentConfig.providerConfigs[providerName][config.key] || config.value
+  }))
+}
+
+// 更新provider配置值
+const updateProviderConfig = (providerName: string, key: string, value: string) => {
+  if (!currentConfig.providerConfigs[providerName]) {
+    currentConfig.providerConfigs[providerName] = {}
+  }
+  currentConfig.providerConfigs[providerName][key] = value
+}
 </script>
