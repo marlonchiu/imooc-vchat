@@ -6,6 +6,7 @@ import { CreateChatProps } from './types'
 import fs from 'fs/promises'
 import url from 'url'
 import { createProvider } from './providers/createProvider'
+import { configManager } from './config'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -27,6 +28,9 @@ protocol.registerSchemesAsPrivileged([
 
 let mainWindow: BrowserWindow
 const createWindow = async () => {
+  // 初始化配置
+  await configManager.load()
+
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 1024,
@@ -62,6 +66,16 @@ const createWindow = async () => {
     const destPath = path.join(imagesDir, fileName)
     await fs.copyFile(sourcePath, destPath)
     return destPath
+  })
+
+  // 读取应用配置
+  ipcMain.handle('get-config', async () => {
+    return configManager.get()
+  })
+
+  // 保存应用配置
+  ipcMain.handle('update-config', async (event, newConfig) => {
+    return await configManager.update(newConfig)
   })
 
   ipcMain.on('start-chat', async (event, data: CreateChatProps) => {
