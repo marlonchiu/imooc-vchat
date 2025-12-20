@@ -79,3 +79,9 @@ export const providerConfigs: Record<string, ProviderConfigItem[]> = {
 2. 使用 electron 的右键菜单，而不是 DOM 模拟的菜单
 3. 现在完成删除对话以后的逻辑，就是使用 conversation store 中的方法
 ```
+
+**13-5 使用 AI 完成应用的优化**
+
+```bash
+现在给 main.ts 当中的代码做一次小重构，我想把和ipcMain 相关的事件都挪到一个单独的文件中，这样看起来更简洁
+```

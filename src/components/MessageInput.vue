@@ -9,7 +9,7 @@
       <!-- icon显示不出来 -->
       <!-- icon="radix-icons:image" -->
       <Icon
-        icon="radix-icons:chat-bubble"
+        icon="radix-icons:image"
         width="24"
         height="24"
         :class="[

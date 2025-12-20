@@ -1,13 +1,12 @@
-import { app, BrowserWindow, ipcMain, protocol, net } from 'electron'
+import { app, BrowserWindow, protocol, net } from 'electron'
 import path from 'node:path'
 import started from 'electron-squirrel-startup'
-import { CreateChatProps } from './types'
-import fs from 'fs/promises'
+import 'dotenv/config'
 import url from 'url'
 import util from 'util'
-import { createProvider } from './providers/createProvider'
 import { configManager } from './config'
-import { createMenu, updateMenu, createContextMenu } from './menu'
+import { createMenu } from './menu'
+import { setupIPC } from './ipc'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -37,20 +36,17 @@ const createWindow = async () => {
   mainWindow = new BrowserWindow({
     width: 1024,
     height: 768,
+    title: 'VChat',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }
   })
 
-  // 创建应用菜单
+  // Create application menu
   createMenu(mainWindow)
 
-  // Add context menu handler
-  ipcMain.on('show-context-menu', (event, id) => {
-    const win = BrowserWindow.fromWebContents(event.sender)
-    if (!win) return
-    createContextMenu(win, id)
-  })
+  // Setup IPC handlers
+  setupIPC(mainWindow)
 
   // 创建一个协议
   protocol.handle('safe-file', async (request) => {
@@ -70,57 +66,6 @@ const createWindow = async () => {
     return await net.fetch(newFilePath)
   })
 
-  ipcMain.handle('copy-image-to-user-dir', async (event, sourcePath: string) => {
-    const userDataPath = app.getPath('userData')
-    const imagesDir = path.join(userDataPath, 'images')
-    await fs.mkdir(imagesDir, { recursive: true })
-    const fileName = path.basename(sourcePath)
-    const destPath = path.join(imagesDir, fileName)
-    await fs.copyFile(sourcePath, destPath)
-    return destPath
-  })
-
-  // 读取应用配置
-  ipcMain.handle('get-config', async () => {
-    return configManager.get()
-  })
-
-  // 保存应用配置
-  ipcMain.handle('update-config', async (event, newConfig) => {
-    const updatedConfig = await configManager.update(newConfig)
-    // 如果语言发生变化，更新菜单
-    if (newConfig.language && mainWindow && !mainWindow.isDestroyed()) {
-      updateMenu(mainWindow)
-    }
-    return updatedConfig
-  })
-
-  ipcMain.on('start-chat', async (event, data: CreateChatProps) => {
-    console.log('hey', data)
-    const { providerName, selectedModel, messages, messageId } = data
-    try {
-      const provider = createProvider(providerName)
-      const stream = await provider.chat(messages, selectedModel)
-      for await (const chunk of stream) {
-        const content = {
-          messageId,
-          data: chunk
-        }
-        mainWindow.webContents.send('update-message', content)
-      }
-    } catch (error) {
-      const errorContent = {
-        messageId,
-        data: {
-          is_end: true,
-          result: error instanceof Error ? error.message : '与AI服务通信时发生错误',
-          is_error: true
-        }
-      }
-      mainWindow.webContents.send('update-message', errorContent)
-    }
-  })
-
   // and load the index.html of the app.
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL)
@@ -129,7 +74,9 @@ const createWindow = async () => {
   }
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  if (!app.isPackaged) {
+    mainWindow.webContents.openDevTools()
+  }
 }
 
 // This method will be called when Electron has finished
