@@ -1,7 +1,6 @@
 import { app, BrowserWindow, ipcMain, protocol, net } from 'electron'
 import path from 'node:path'
 import started from 'electron-squirrel-startup'
-import 'dotenv/config'
 import { CreateChatProps } from './types'
 import fs from 'fs/promises'
 import url from 'url'

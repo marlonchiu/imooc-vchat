@@ -103,3 +103,10 @@ npm install -D @types/mime-types
 ```bash
 npm install vue-i18n@next
 ```
+
+
+**使用 makers 生成安装包**
+
+```
+npm install -D @electron-forge/maker-dmg
+```

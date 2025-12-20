@@ -4,8 +4,8 @@ export default {
     language: 'Language',
     fontSize: 'Font Size',
     selectLanguage: 'Select Language...',
-    general: 'General',
-    models: 'Models'
+    general: 'General Setting',
+    models: 'Models Setting'
   },
   contextMenu: {
     deleteConversation: 'Delete Conversation'

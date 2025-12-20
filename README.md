@@ -48,3 +48,27 @@
 
 > [markdown-it](https://github.com/markdown-it/markdown-it)
 > [vue-markdown-render](https://github.com/cloudacy/vue-markdown-render)
+
+## 打包
+
+> [Electron Forge | Makers](https://www.electronforge.io/config/makers)
+
+```bash
+# 1.package 命令
+npm run package
+# 结果:生成可执行程序，但还不是安装包，直接双击就可以使用
+
+#2.make 命令
+npm run make
+# 结果:生成完整的安装包，需要安装完毕以后使用
+```
+
+## 图标说明
+
+> 图标的对应关系
+> icon.icns # mac0s 应用图标
+> icon.ico # Windows 图标
+> icon.png # Linux 图标
+>
+> [快速制作图标的网站](https://ray.so/icon)
+> [转换文件格式的网站](https://cloudconvert.com/png-to-icns)
