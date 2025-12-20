@@ -9,6 +9,8 @@ export interface IElectronAPI {
   updateConfig: (config: Partial<AppConfig>) => Promise<AppConfig>
   onMenuNewConversation: (callback: () => void) => void
   onMenuOpenSettings: (callback: () => void) => void
+  showContextMenu: (id: number) => Promise<void>
+  onDeleteConversation: (callback: (id: number) => void) => void
 }
 
 declare global {

@@ -8,7 +8,7 @@ import url from 'url'
 import util from 'util'
 import { createProvider } from './providers/createProvider'
 import { configManager } from './config'
-import { createMenu, updateMenu } from './menu'
+import { createMenu, updateMenu, createContextMenu } from './menu'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -45,6 +45,13 @@ const createWindow = async () => {
 
   // 创建应用菜单
   createMenu(mainWindow)
+
+  // Add context menu handler
+  ipcMain.on('show-context-menu', (event, id) => {
+    const win = BrowserWindow.fromWebContents(event.sender)
+    if (!win) return
+    createContextMenu(win, id)
+  })
 
   // 创建一个协议
   protocol.handle('safe-file', async (request) => {

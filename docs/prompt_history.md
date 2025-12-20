@@ -71,3 +71,11 @@ export const providerConfigs: Record<string, ProviderConfigItem[]> = {
 2. 现在请添加菜单国际化逻辑，菜单应该根据应用语言来设置，请注意现在的解决方案使用的是 vue-i18n，应用设置采用 configManager 的方式
 3. editMenu 、 viewMenu 、windowMenu 是否也可以实现对应的国际化
 ```
+
+**12-11 使用 AI 完成上下文菜单删除对话**
+
+```bash
+1. 我现在想在 ConversationList 上面显示右键菜单，菜单现在只添加一项删除对话，先不需要完成删除功能，只要点右键显示该菜单即可。
+2. 使用 electron 的右键菜单，而不是 DOM 模拟的菜单
+3. 现在完成删除对话以后的逻辑，就是使用 conversation store 中的方法
+```

@@ -7,6 +7,9 @@ export default {
     general: 'General',
     models: 'Models'
   },
+  contextMenu: {
+    deleteConversation: 'Delete Conversation'
+  },
   common: {
     send: 'Send',
     chinese: 'Chinese',

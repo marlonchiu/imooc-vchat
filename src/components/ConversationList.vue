@@ -9,6 +9,7 @@
       }"
       v-for="item in items"
       :key="item.id"
+      @contextmenu.prevent="showContextMenu(item.id)"
     >
       <a @click.prevent="goToConversation(item.id)">
         <div class="flex justify-between items-center text-sm leading-5 text-gray-500">
@@ -24,9 +25,11 @@
 <script lang="ts" setup>
 defineOptions({ name: 'ConversationList' })
 
+defineProps<{ items: ConversationProps[] }>()
+
+import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ConversationProps } from '../types'
-defineProps<{ items: ConversationProps[] }>()
 import dayjs from 'dayjs'
 
 import { useConversationStore } from '../stores/conversation'
@@ -37,6 +40,19 @@ const goToConversation = (id: number) => {
   router.push({ path: `/conversation/${id}` })
   conversationStore.selectedId = id
 }
+
+const showContextMenu = (id: number) => {
+  window.electronAPI.showContextMenu(id)
+}
+onMounted(() => {
+  window.electronAPI.onDeleteConversation(async (id: number) => {
+    await conversationStore.deleteConversation(id)
+    if (conversationStore.selectedId === id) {
+      conversationStore.selectedId = -1
+      router.push('/')
+    }
+  })
+})
 </script>
 
 <style lang="scss" scoped></style>

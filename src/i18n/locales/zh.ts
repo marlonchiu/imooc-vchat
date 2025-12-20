@@ -7,6 +7,9 @@ export default {
     general: '通用设置',
     models: '模型设置'
   },
+  contextMenu: {
+    deleteConversation: '删除对话'
+  },
   common: {
     send: '发送',
     chinese: '中文',

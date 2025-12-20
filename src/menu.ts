@@ -8,14 +8,11 @@ const messages: Record<string, MessageSchema> = {
   en,
   zh
 }
-/**
- * 创建应用菜单
- * @param mainWindow 主窗口实例，用于发送 IPC 事件
- * @param language 语言设置，默认为 'zh'
- */
-const createMenu = (mainWindow: BrowserWindow) => {
+
+// 创建一个通用的翻译函数
+const createTranslator = () => {
   const config = configManager.get()
-  const t = (key: string) => {
+  return (key: string) => {
     const keys = key.split('.')
     let result: any = messages[config.language]
     for (const k of keys) {
@@ -23,6 +20,14 @@ const createMenu = (mainWindow: BrowserWindow) => {
     }
     return result as string
   }
+}
+/**
+ * 创建应用菜单
+ * @param mainWindow 主窗口实例，用于发送 IPC 事件
+ * @param language 语言设置，默认为 'zh'
+ */
+const createMenu = (mainWindow: BrowserWindow) => {
+  const t = createTranslator()
 
   const template: (Electron.MenuItemConstructorOptions | Electron.MenuItem)[] = [
     // 文件菜单（包含新建对话）
@@ -168,9 +173,23 @@ const createMenu = (mainWindow: BrowserWindow) => {
   Menu.setApplicationMenu(menu)
 }
 
+const createContextMenu = (win: BrowserWindow, id: number) => {
+  const t = createTranslator()
+  const template = [
+    {
+      label: t('contextMenu.deleteConversation'),
+      click: () => {
+        win.webContents.send('delete-conversation', id)
+      }
+    }
+  ]
+  const menu = Menu.buildFromTemplate(template)
+  menu.popup({ window: win })
+}
+
 // 导出一个更新菜单的函数，在语言改变时调用
 const updateMenu = (mainWindow: BrowserWindow) => {
   createMenu(mainWindow)
 }
 
-export { createMenu, updateMenu }
+export { createMenu, updateMenu, createContextMenu }

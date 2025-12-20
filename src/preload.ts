@@ -11,5 +11,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getConfig: () => ipcRenderer.invoke('get-config'),
   updateConfig: (config: Partial<AppConfig>) => ipcRenderer.invoke('update-config', config),
   onMenuNewConversation: (callback: () => void) => ipcRenderer.on('menu-new-conversation', () => callback()),
-  onMenuOpenSettings: (callback: () => void) => ipcRenderer.on('menu-open-settings', () => callback())
+  onMenuOpenSettings: (callback: () => void) => ipcRenderer.on('menu-open-settings', () => callback()),
+  showContextMenu: (id: number) => ipcRenderer.send('show-context-menu', id),
+  onDeleteConversation: (callback: (id: number) => void) =>
+    ipcRenderer.on('delete-conversation', (_event, id) => callback(id))
 })
