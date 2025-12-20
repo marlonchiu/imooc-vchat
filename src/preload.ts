@@ -9,5 +9,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getFilePath: (file: File) => webUtils.getPathForFile(file),
   copyImageToUserDir: (sourcePath: string) => ipcRenderer.invoke('copy-image-to-user-dir', sourcePath),
   getConfig: () => ipcRenderer.invoke('get-config'),
-  updateConfig: (config: Partial<AppConfig>) => ipcRenderer.invoke('update-config', config)
+  updateConfig: (config: Partial<AppConfig>) => ipcRenderer.invoke('update-config', config),
+  onMenuNewConversation: (callback: () => void) => ipcRenderer.on('menu-new-conversation', () => callback()),
+  onMenuOpenSettings: (callback: () => void) => ipcRenderer.on('menu-open-settings', () => callback())
 })

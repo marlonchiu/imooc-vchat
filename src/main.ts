@@ -8,7 +8,7 @@ import url from 'url'
 import util from 'util'
 import { createProvider } from './providers/createProvider'
 import { configManager } from './config'
-import { createMenu } from './menu'
+import { createMenu, updateMenu } from './menu'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -81,7 +81,12 @@ const createWindow = async () => {
 
   // 保存应用配置
   ipcMain.handle('update-config', async (event, newConfig) => {
-    return await configManager.update(newConfig)
+    const updatedConfig = await configManager.update(newConfig)
+    // 如果语言发生变化，更新菜单
+    if (newConfig.language && mainWindow && !mainWindow.isDestroyed()) {
+      updateMenu(mainWindow)
+    }
+    return updatedConfig
   })
 
   ipcMain.on('start-chat', async (event, data: CreateChatProps) => {

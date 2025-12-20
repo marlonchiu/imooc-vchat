@@ -21,24 +21,45 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, computed } from 'vue'
+import { onMounted, computed, onBeforeUnmount } from 'vue'
+import { useRouter } from 'vue-router'
 import ConversationList from './components/ConversationList.vue'
 import Button from './components/Button.vue'
 import { initProviders } from './db'
 import { useConversationStore } from './stores/conversation'
 import { useProviderStore } from './stores/provider'
 import { useI18n } from 'vue-i18n'
+import { initI18n } from './i18n'
 const { t } = useI18n()
 
+const router = useRouter()
 const conversationStore = useConversationStore()
 const items = computed(() => conversationStore.items)
 
 const providerStore = useProviderStore()
 
 onMounted(async () => {
+  await initI18n()
+
   await initProviders()
   // 获取初始化需要的数据
   providerStore.fetchProviders()
   conversationStore.fetchConversations()
+
+  // 监听菜单事件
+  // 新建对话
+  window.electronAPI.onMenuNewConversation(() => {
+    router.push('/')
+  })
+
+  // 打开设置
+  window.electronAPI.onMenuOpenSettings(() => {
+    router.push('/settings')
+  })
+})
+
+onBeforeUnmount(() => {
+  // 清理事件监听器（如果需要的话）
+  // Electron 的 ipcRenderer.removeAllListeners 会在窗口关闭时自动清理
 })
 </script>
