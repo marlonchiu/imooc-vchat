@@ -8,6 +8,7 @@ import url from 'url'
 import util from 'util'
 import { createProvider } from './providers/createProvider'
 import { configManager } from './config'
+import { createMenu } from './menu'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -41,6 +42,9 @@ const createWindow = async () => {
       preload: path.join(__dirname, 'preload.js')
     }
   })
+
+  // 创建应用菜单
+  createMenu(mainWindow)
 
   // 创建一个协议
   protocol.handle('safe-file', async (request) => {
