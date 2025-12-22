@@ -15,7 +15,8 @@ export default {
     chinese: '中文',
     english: 'English',
     newChat: '新建聊天',
-    appSettings: '应用设置'
+    appSettings: '应用设置',
+    inputPlaceholder: '请输入内容'
   },
   menu: {
     app: {

@@ -23,6 +23,7 @@
         type="text"
         :disabled="disabled"
         v-model="model"
+        :placeholder="t('common.inputPlaceholder')"
       />
 
       <Button icon-name="radix-icons:paper-plane" :disabled="disabled" @click="onCreate">{{ t('common.send') }}</Button>
