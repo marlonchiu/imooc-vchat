@@ -7,6 +7,7 @@ import util from 'util'
 import { configManager } from './config'
 import { createMenu } from './menu'
 import { setupIPC } from './ipc'
+import { updateElectronApp, UpdateSourceType } from 'update-electron-app'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -103,3 +104,11 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+
+updateElectronApp({
+  updateSource: {
+    type: UpdateSourceType.ElectronPublicUpdateService,
+    repo: 'marlonchiu/imooc-vchat'
+  },
+  updateInterval: '7 days'
+})

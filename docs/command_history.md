@@ -105,8 +105,15 @@ npm install vue-i18n@next
 ```
 
 
-**使用 makers 生成安装包**
+**13-4 使用 makers 生成安装包**
 
-```
+```bash
 npm install -D @electron-forge/maker-dmg
+```
+
+**14-3 完成应用自动更新功能**
+
+```bash
+npm install -D @electron-forge/publisher-github
+npm install -D update-electron-app
 ```

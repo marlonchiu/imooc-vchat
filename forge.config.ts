@@ -8,6 +8,9 @@ import { VitePlugin } from '@electron-forge/plugin-vite'
 import { FusesPlugin } from '@electron-forge/plugin-fuses'
 import { FuseV1Options, FuseVersion } from '@electron/fuses'
 import path from 'path'
+import dotenv from 'dotenv'
+// Load environment variables from .env file
+dotenv.config()
 
 const config: ForgeConfig = {
   // 基础打包配置
@@ -40,6 +43,20 @@ const config: ForgeConfig = {
     new MakerZIP({}, ['darwin', 'win32']), // 压缩包，直接解压就可以运行
     new MakerRpm({}), // RPM包 - 用于 Red Hat 系列 适用于:Red Hat，Fedora，Cent0S，SUSE
     new MakerDeb({}) // DEB包 - 用于 Debian 系列 适用于:Ubuntu，Debian，Linux Mint
+  ],
+  publishers: [
+    {
+      name: '@electron-forge/publisher-github',
+      config: {
+        repository: {
+          owner: 'marlonchiu',
+          name: 'imooc-vchat'
+        },
+        prerelease: false, // 设置为正式发布，如果想发布测试版本可设置为true
+        draft: true, // 创建草稿发布，可以在正式发布前检查
+        authToken: process.env.GITHUB_TOKEN
+      }
+    }
   ],
   plugins: [
     new VitePlugin({
