@@ -49,7 +49,7 @@
     "@tailwindcss/vite": "^4.1.17",
     "dayjs": "^1.11.19",
     "dexie": "^4.2.1",
-    "dotenv": "^17.2.3",
+    "dotenv": "^16.4.5",
     "electron-squirrel-startup": "^1.0.1",
     "highlight.js": "^11.11.1",
     "markdown-it-highlightjs": "^4.2.0",

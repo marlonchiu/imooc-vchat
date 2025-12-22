@@ -1,7 +1,7 @@
 import { BaseProvider } from './BaseProvider'
 import { QianfanProvider } from './QianfanProvider'
 import { OpenAIProvider } from './OpenAIProvider'
-import 'dotenv/config'
+// import 'dotenv/config'
 import { configManager } from '../config'
 
 export function createProvider(providerName: string): BaseProvider {

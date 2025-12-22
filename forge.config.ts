@@ -13,7 +13,7 @@ const config: ForgeConfig = {
   // 基础打包配置
   packagerConfig: {
     name: 'VChat',
-    icon: './assets/icon',
+    icon: './src/assets/icon',
     asar: true // 将源码压缩为 asar档案
   },
   rebuildConfig: {},
@@ -26,15 +26,15 @@ const config: ForgeConfig = {
       authors: 'xxx',
       description: 'A chat application',
       // 安装包配置
-      setupIcon: './assets/icon.ico', // Windows 安装图标
-      iconUrl: 'file://' + path.resolve('./assets/icon.ico'), // 使用本地图标
+      setupIcon: './src/assets/icon.ico', // Windows 安装图标
+      iconUrl: 'file://' + path.resolve('./src/assets/icon.ico'), // 使用本地图标
       // iconUrl: 'https://raw.githubusercontent.com/your-repo/vchat/main/assets/icon.ico', // 远程图标URL
       // 自定义安装程序选项
       setupExe: 'VChat-Setup.exe' // 安装程序名称
     }),
     // 制作 macOS 安装包
     new MakerDMG({
-      icon: './assets/icon.ico',
+      icon: './src/assets/icon.ico',
       format: 'ULFO' // 创建的安装包格式, 默认为 'ULFO' 兼容性更好
     }),
     new MakerZIP({}, ['darwin', 'win32']), // 压缩包，直接解压就可以运行

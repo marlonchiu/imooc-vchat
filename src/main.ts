@@ -1,7 +1,7 @@
 import { app, BrowserWindow, protocol, net } from 'electron'
 import path from 'node:path'
 import started from 'electron-squirrel-startup'
-import 'dotenv/config'
+// import 'dotenv/config'
 import url from 'url'
 import util from 'util'
 import { configManager } from './config'
