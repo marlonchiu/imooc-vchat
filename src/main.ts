@@ -75,7 +75,7 @@ const createWindow = async () => {
   }
 
   // Open the DevTools.
-  if (!app.isPackaged) {
+  if (!app.isPackaged && process.env.OPEN_DEV_TOOLS === 'true') {
     mainWindow.webContents.openDevTools()
   }
 }

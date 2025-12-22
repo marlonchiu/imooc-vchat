@@ -1,74 +1,165 @@
 # imooc-vchat
 
+<p align="center">
+  <img src="./src/assets/icon.png" alt="VChat Icon" width="128" height="128">
+  <br>
+  <em>VChat 是一个基于 Vue 3 + Electron 构建的跨平台 AI 聊天桌面应用，支持多个主流大语言模型 Provider，提供流畅的对话体验。</em>
+</p>
+
+
+## course
+
 > [慕课网 | Al助手Cursor辅助 Vue3.5+Electron+ 大模型跨平台实战](https://coding.imooc.com/class/921.html)
-> [https://github.com/marlonchiu/imooc-vchat](https://github.com/marlonchiu/imooc-vchat)
-> [参考源码 https://github.com/linkgeek/vchat](https://github.com/linkgeek/vchat)
-> [参考API GPT_API_free](https://github.com/chatanywhere/GPT_API_free)
-
-## 大模型列表
-
-> [中国大模型列表 Awesome LLMs In China](https://github.com/wgwang/awesome-LLMs-In-China)
-> [Comparison of over 100 AI models from OpenAI, Google, DeepSeek & others](https://artificialanalysis.ai/leaderboards/models)
-
-## 百度千帆
-
-> [百度千帆控制台](https://console.bce.baidu.com/qianfan/modelcenter/model/buildIn/list)
-> [千帆大模型服务与开发平台ModelBuilder](https://ai.baidu.com/ai-doc/WENXINWORKSHOP/vliu6vq7u)
-> [百度千帆·大模型服务及Agent开发平台模型列表](https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j)
-> [ERNIE-Speed-128K API文档](https://cloud.baidu.com/doc/WENXINWORKSHOP/s/6ltgkzya5)
-> [OpenAI SDK调用](https://cloud.baidu.com/doc/WENXINWORKSHOP/s/2m3fihw8s)
-> [百度千帆大模型平台 JavaScript SDK](https://cloud.baidu.com/doc/WENXINWORKSHOP/s/2m3fihw8s)
-> [千帆大模型输入输出长度统一规范](https://ai.baidu.com/ai-doc/WENXINWORKSHOP/Ultiovtgu)
-> [千帆大模型Token 计算器](https://console.bce.baidu.com/tools/#/tokenizer)
-> [导入Role(user+assistant)数据](https://ai.baidu.com/ai-doc/WENXINWORKSHOP/om1k634fe)
-> [Messages使用说明](https://ai.baidu.com/ai-doc/WENXINWORKSHOP/9m9cttnvs)
-
-## 阿里千问
-
-> [阿里云灵积(已经不支持开通，都转到百炼平台了)](https://dashscope.aliyun.com/)
-> [阿里云百炼](https://www.aliyun.com/product/bailian)
 >
-> [DashScope模型服务灵积/模型广场](https://dashscope.console.aliyun.com/model)
-> [百炼模型广场](https://bailian.console.aliyun.com/?tab=model#/model-market)
-> [OpenAI 兼容](https://bailian.console.aliyun.com/?tab=api#/api/?type=model&url=2712576)
+> [https://github.com/marlonchiu/imooc-vchat](https://github.com/marlonchiu/imooc-vchat)
 
-> [视觉理解（Qwen-VL）](https://help.aliyun.com/zh/model-studio/vision?spm=5176.28630291.0.0.24bf7eb5EayOOs&disableWebsiteRedirect=true#2c294798d3esy)
-> [传入本地文件（Base64 编码或文件路径））](https://help.aliyun.com/zh/model-studio/vision?spm=5176.28630291.0.0.24bf7eb5EayOOs&disableWebsiteRedirect=true#a63fbac15a8s8)
+## 📷 应用预览
+<img width="1100" height="768" alt="image" src="./src/assets/review/home.png" />
 
-> [长上下文（Qwen-Long）](https://help.aliyun.com/zh/model-studio/long-context-qwen-long?spm=5176.21213303.J_ZGek9Blx07Hclc3Ddt9dg.1.30db2f3dXwICrd&scm=20140722.S_help@@%E6%96%87%E6%A1%A3@@2846146._.ID_help@@%E6%96%87%E6%A1%A3@@2846146-RL_gwen~DAS~long~DAS~guick~DAS~star-LOC_2024SPHelpResult-OR_ser-PAR1_213e057617656123624265065ea2c2-V_4-PAR3_o-RE_new8-P0_0-P1_0)
-> qwen-long是通义千问模型家族中，提供具备强大长文本处理能力的模型，最大可支持千万tokens的对话窗口，并通过与OpenAl兼容的模式提供API服务。
-> [OpenAI文件接口兼容 | 使用文件上传接口](https://help.aliyun.com/zh/model-studio/developer-reference/document-upload-openai-qwen-long)
+<img width="1100" height="768" alt="image" src="./src/assets/review/converation.png" />
 
-## Dexie
+<img width="1100" height="768" alt="image" src="./src/assets/review/setting.png" />
 
-> [Dexie.js](https://dexie.org/)
-> [Dexie.js Typescript](https://dexie.org/docs/typescript)
+<img width="1100" height="768" alt="image" src="./src/assets/review/models-setting.png" />
 
-## markdown解析
+## 特性
 
-> [markdown-it](https://github.com/markdown-it/markdown-it)
-> [vue-markdown-render](https://github.com/cloudacy/vue-markdown-render)
+- 🚀 基于 Electron + Vue 3 + TypeScript 开发
+- 💬 支持多种 AI 模型接入（百度千帆、阿里通义千问、DeepSeek）
+- 🎨 现代化的用户界面设计
+- 📱 跨平台支持（Windows、macOS、Linux）
+- 🔒 本地数据存储，保护隐私
+- 🎯 支持 Markdown 格式消息
+- 🌙 深色模式支持
 
-## 打包
+## 待完善功能
 
-> [Electron Forge | Makers](https://www.electronforge.io/config/makers)
+- 🌐 多语言支持
+  - 更多语言支持计划中
+- 🎨 主题定制
+  - 自定义主题色
+  - 主题切换动画
+  - 更多主题模板
+- 🤖 AI 模型设置
+  - 模型参数自定义
+  - 默认模型设置
+  - 模型切换快捷键
+- 📱 界面优化
+  - 响应式布局优化
+  - 移动端适配
+  - 更多自定义选项
+- 🔄 功能增强
+  - 对话导出
+  - 历史记录搜索
+  - 快捷指令
+  - 更多 AI 模型接入
+
+## 快速开始
+
+### 环境要求
+
+- Node.js 16+
+- npm 或 yarn
+
+### 安装
+
+1. 克隆项目
 
 ```bash
-# 1.package 命令
-npm run package
-# 结果:生成可执行程序，但还不是安装包，直接双击就可以使用
-
-#2.make 命令
-npm run make
-# 结果:生成完整的安装包，需要安装完毕以后使用
+git clone https://gitee.com/linkgeek/vchat.git
+cd vchat
 ```
 
-## 图标说明
+2. 安装依赖
 
-> 图标的对应关系
-> icon.icns # mac0s 应用图标
-> icon.ico # Windows 图标
-> icon.png # Linux 图标
->
-> [快速制作图标的网站](https://ray.so/icon)
-> [转换文件格式的网站](https://cloudconvert.com/png-to-icns)
+```bash
+npm install
+```
+
+3. 配置环境变量
+   创建 `.env` 文件，并添加以下配置：
+
+```env
+QIANFAN_ACCESS_KEY=百度千帆AK
+QIANFAN_SECRET_KEY=百度千帆密钥
+ALI_API_KEY==阿里通义千问API密钥
+GITHUB_TOKEN=你的github token
+```
+
+4. 启动开发服务器
+
+```bash
+npm start
+```
+
+### 构建
+
+构建生产版本：
+
+```bash
+npm run make
+```
+
+## 项目结构
+
+```
+vchat/
+├── assets/              # 静态资源
+├── src/                 # 源代码
+│   ├── compoents/       # 组件
+│   ├── config/          # 配置目录
+│   ├── i18n/            # 多语言设置
+│   ├── locales/         # 语言包
+│   ├── providers/       # 大模型提供者
+│   ├── stores/          # 状态管理
+│   ├── views/           # 视图页
+│   ├── config.ts        # 配置操作
+│   ├── db.ts            # 数据存储
+│   ├── ipc.ts           # 渲染进程和主进程间的通信
+│   ├── main.ts          # 主进程
+│   ├── menu.ts          # 应用顶部菜单栏
+│   ├── preload.ts       # 主进程与渲染进程通信预加载脚本
+│   ├── renderer.ts      # 渲染进程
+
+│   └── types.ts         # TypeScript 类型定义
+
+├── command_history.md/  # 历史命令
+├── forge.config.ts/     # 打包等配置
+├── interface.d.ts/      # 接口定义
+└── ...
+```
+
+## 技术栈
+
+- Electron - 跨平台桌面应用框架
+- Vue 3 - 前端框架
+- TypeScript - 类型安全的 JavaScript
+- Tailwind CSS - 样式框架
+- Pinia - 状态管理
+- Vite - 构建工具
+
+## 警告
+1. 本项目仅用于学习
+2. 本项目还不完善，仍处在开发中，不承担任何使用后果
+
+
+## 致谢
+
+本项目基于或参考以下项目：
+1. [vchat](https://github.com/linkgeek/vchat)
+
+2. [vchat](https://github.com/tyler4400/vchat)
+
+3. [UmChat](https://github.com/lunarise-dev/UmChat)
+
+## 打包常见问题及解决
+用electron-forge打包时巨慢，可能会出现各种问题。
+
+> npm下载electron失败：
+  $env:ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/"
+
+> 下载或打包超时, 尝试: 用管理员模式
+
+## License
+
+MIT License

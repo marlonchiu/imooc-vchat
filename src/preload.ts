@@ -3,6 +3,7 @@
 import { ipcRenderer, contextBridge, webUtils } from 'electron'
 import { CreateChatProps, OnUpdatedCallback, AppConfig } from './types'
 
+// 通过 contextBridge 仅暴露必要的 API，避免直接暴露 ipcRenderer，并转发 IPC 通信到主进程
 contextBridge.exposeInMainWorld('electronAPI', {
   startChat: (data: CreateChatProps) => ipcRenderer.send('start-chat', data),
   onUpdateMessage: (callback: OnUpdatedCallback) => ipcRenderer.on('update-message', (_event, data) => callback(data)),
@@ -16,3 +17,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   onDeleteConversation: (callback: (id: number) => void) =>
     ipcRenderer.on('delete-conversation', (_event, id) => callback(id))
 })
+
+// IPC 模式：
+
+// 单向通知：send/on
+// 双向调用：invoke/handle
+// 事件推送：webContents.send + ipcRenderer.on
