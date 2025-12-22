@@ -18,7 +18,8 @@ export const useConversationStore = defineStore('conversation', {
   },
   actions: {
     async fetchConversations() {
-      const items = await db.conversations.toArray()
+      // 对话列表倒序显示
+      const items = await db.conversations.orderBy('id').reverse().toArray()
       this.items = items
     },
     // 创建新对话

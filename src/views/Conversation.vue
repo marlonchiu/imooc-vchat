@@ -1,5 +1,8 @@
 <template>
-  <div v-if="conversation" class="h-[10%] bg-gray-200 border-b border-gray-300 flex items-center px-3 justify-between">
+  <div
+    v-if="conversation"
+    class="h-[10%] shadow-sm bg-gray-200 border-b border-gray-300 flex items-center px-3 justify-between"
+  >
     <h3 class="font-semibold text-gray-900">{{ conversation.title }}</h3>
     <span class="text-sm text-gray-500">{{ dayjs(conversation.updatedAt).format('YYYY-MM-DD HH:mm:ss') }}</span>
   </div>
