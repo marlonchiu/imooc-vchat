@@ -6,7 +6,7 @@
           <div class="text-sm text-gray-500 mb-2" :class="{ 'text-right': message.type === 'question' }">
             {{ dayjs(message.createdAt).format('YYYY-MM-DD HH:mm:ss') }}
           </div>
-          <div class="message-question bg-green-700 text-white p-2 rounded-md" v-if="message.type === 'question'">
+          <div class="message-question bg-primary-700 text-white p-2 rounded-md" v-if="message.type === 'question'">
             <img
               v-if="message.imagePath"
               :src="`safe-file://${message.imagePath}`"

@@ -3,6 +3,9 @@ export default {
     title: '应用设置',
     language: '语言设置',
     fontSize: '字体大小',
+    theme: '主题颜色',
+    themeGreen: '绿色',
+    themePurple: '紫色',
     selectLanguage: '选择语言...',
     general: '通用设置',
     models: '模型设置'

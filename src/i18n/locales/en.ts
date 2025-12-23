@@ -3,6 +3,9 @@ export default {
     title: 'Settings',
     language: 'Language',
     fontSize: 'Font Size',
+    theme: 'Theme Color',
+    themeGreen: 'Green',
+    themePurple: 'Purple',
     selectLanguage: 'Select Language...',
     general: 'General Setting',
     models: 'Models Setting'

@@ -1,3 +1,5 @@
+export type ButtonColor = 'green' | 'purple'
+
 export interface ConversationProps {
   id: number
   title: string
@@ -73,11 +75,13 @@ export interface BaiduChunkProps {
 export interface AppConfig {
   language: 'zh' | 'en'
   fontSize: number
+  theme: ButtonColor
   providerConfigs: Record<string, Record<string, string>>
 }
 
 export const DEFAULT_CONFIG: AppConfig = {
   language: 'zh',
   fontSize: 14,
+  theme: 'green',
   providerConfigs: {}
 }

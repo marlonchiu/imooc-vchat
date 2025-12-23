@@ -6,19 +6,52 @@
       <TabsList class="flex border-b border-gray-200 mb-6">
         <TabsTrigger
           value="general"
-          class="px-4 py-2 -mb-[1px] text-sm font-medium text-gray-600 hover:text-gray-800 data-[state=active]:text-green-600 data-[state=active]:border-b-2 data-[state=active]:border-green-600"
+          class="px-4 py-2 -mb-[1px] text-sm font-medium text-gray-600 hover:text-gray-800 data-[state=active]:text-primary-600 data-[state=active]:border-b-2 data-[state=active]:border-primary-700"
         >
           {{ t('settings.general') }}
         </TabsTrigger>
         <TabsTrigger
           value="models"
-          class="px-4 py-2 -mb-[1px] text-sm font-medium text-gray-600 hover:text-gray-800 data-[state=active]:text-green-600 data-[state=active]:border-b-2 data-[state=active]:border-green-600"
+          class="px-4 py-2 -mb-[1px] text-sm font-medium text-gray-600 hover:text-gray-800 data-[state=active]:text-primary-600 data-[state=active]:border-b-2 data-[state=active]:border-primary-700"
         >
           {{ t('settings.models') }}
         </TabsTrigger>
       </TabsList>
 
       <TabsContent value="general" class="space-y-6 max-w-[500px]">
+        <!-- Theme Setting -->
+        <div class="setting-item flex items-center gap-8">
+          <label class="text-sm font-medium text-gray-700 w-24">
+            {{ t('settings.theme') }}
+          </label>
+          <div class="flex gap-3">
+            <button
+              type="button"
+              :class="[
+                'px-4 py-2 rounded-md text-sm font-medium transition-colors border-2',
+                currentConfig.theme === 'green'
+                  ? 'border-primary-500 bg-primary-50 text-primary-700'
+                  : 'border-gray-200 bg-white text-gray-700 hover:border-primary-300'
+              ]"
+              @click="currentConfig.theme = 'green'"
+            >
+              {{ t('settings.themeGreen') }}
+            </button>
+            <button
+              type="button"
+              :class="[
+                'px-4 py-2 rounded-md text-sm font-medium transition-colors border-2',
+                currentConfig.theme === 'purple'
+                  ? 'border-primary-500 bg-primary-50 text-primary-700'
+                  : 'border-gray-200 bg-white text-gray-700 hover:border-primary-300'
+              ]"
+              @click="currentConfig.theme = 'purple'"
+            >
+              {{ t('settings.themePurple') }}
+            </button>
+          </div>
+        </div>
+
         <!-- Language Setting -->
         <div class="setting-item flex items-center gap-8">
           <label class="text-sm font-medium text-gray-700 w-24">
@@ -74,7 +107,7 @@
               <Icon icon="radix-icons:minus" />
             </NumberFieldDecrement>
             <NumberFieldInput
-              class="w-10 px-2 py-2 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-green-500 text-center"
+              class="w-10 px-2 py-2 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-primary-500 text-center"
               :min="12"
               :max="20"
             />
@@ -121,7 +154,7 @@
                     @input="
                       (e) => updateProviderConfig(provider.name, config.key, (e.target as HTMLInputElement).value)
                     "
-                    class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-green-500"
+                    class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500"
                   />
                 </div>
               </div>
@@ -178,12 +211,15 @@ const providers = computed(() => providerStore.items)
 const currentConfig = reactive<AppConfig>({
   language: 'zh',
   fontSize: 14,
+  theme: 'green',
   providerConfigs: {}
 })
 
 onMounted(async () => {
   const config = await window.electronAPI.getConfig()
   Object.assign(currentConfig, config)
+  // 应用主题色
+  applyTheme(currentConfig.theme)
 })
 
 // 监听配置变化并自动保存
@@ -193,14 +229,22 @@ watch(
     const configToSave = {
       language: newConfig.language,
       fontSize: newConfig.fontSize,
+      theme: newConfig.theme,
       providerConfigs: JSON.parse(JSON.stringify(newConfig.providerConfigs))
     }
     await window.electronAPI.updateConfig(configToSave)
     // 更新界面语言
     setI18nLanguage(newConfig.language)
+    // 更新主题色
+    applyTheme(newConfig.theme)
   },
   { deep: true }
 )
+
+// 应用主题色
+const applyTheme = (theme: 'green' | 'purple') => {
+  document.documentElement.setAttribute('data-theme', theme)
+}
 
 // 获取provider对应的配置项
 const getProviderConfig = (providerName: string): ProviderConfigItem[] => {

@@ -14,8 +14,8 @@ defineOptions({ name: 'VkButton' })
 
 import { computed } from 'vue'
 import { Icon } from '@iconify/vue'
+import { ButtonColor } from '../types'
 
-export type ButtonColor = 'green' | 'purple'
 export type ButtonSize = 'large' | 'small'
 
 export interface ButtonProps {
@@ -31,24 +31,15 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   color: 'green'
 })
 
-const colorVariants: Record<ButtonColor, any> = {
-  green: {
-    plain: 'bg-green-50 text-green-700 hover:bg-green-700 border border-green-700 hover:text-white',
-    normal: 'bg-green-700 text-white hover:bg-green-700/90 border border-green-700'
-  },
-  purple: {
-    plain:
-      'bg-purple-50 text-purple-700 hover:bg-purple-700 border border-purple-700 hover:text-white disabled:bg-purple-500',
-    normal: 'bg-purple-700 text-white hover:bg-purple-700/90 border border-purple-700'
-  }
+// 主题色配置 - 通过 CSS 变量自动适配 green/purple 主题
+const themeColors = {
+  plain:
+    'bg-primary-50 text-primary-700 hover:bg-primary-700 border border-primary-700 hover:text-white disabled:bg-primary-500',
+  normal: 'bg-primary-700 text-white hover:bg-primary-700/90 border border-primary-700'
 }
 
 const colorClasses = computed(() => {
-  if (props.plain) {
-    return colorVariants[props.color].plain
-  } else {
-    return colorVariants[props.color].normal
-  }
+  return props.plain ? themeColors.plain : themeColors.normal
 })
 
 const sizeClasses = computed(() => {

@@ -1,5 +1,5 @@
 <template>
-  <div class="message-input w-full shadow-sm border rounded-lg border-gray-300 py-1 px-2 focus-within:border-green-700">
+  <div class="message-input w-full shadow-sm border rounded-lg border-gray-300 py-1 px-2 focus-within:border-primary-700">
     <div v-if="imagePreview" class="mb-2 relative flex items-center">
       <img :src="imagePreview" alt="Preview" class="h-24 w-24 object-cover rounded" />
     </div>
