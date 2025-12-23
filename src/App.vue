@@ -41,6 +41,10 @@ const providerStore = useProviderStore()
 onMounted(async () => {
   await initI18n()
 
+  // 应用主题色
+  const config = await window.electronAPI.getConfig()
+  document.documentElement.setAttribute('data-theme', config.theme || 'green')
+
   await initProviders()
   // 获取初始化需要的数据
   providerStore.fetchProviders()

@@ -1,4 +1,4 @@
-export type ButtonColor = 'green' | 'purple'
+export type ButtonColor = 'green' | 'purple' | 'rose' | 'amber' | 'pink'
 
 export interface ConversationProps {
   id: number

@@ -6,6 +6,9 @@ export default {
     theme: 'Theme Color',
     themeGreen: 'Green',
     themePurple: 'Purple',
+    themeRose: 'Rose',
+    themeAmber: 'Amber',
+    themePink: 'Pink',
     selectLanguage: 'Select Language...',
     general: 'General Setting',
     models: 'Models Setting'

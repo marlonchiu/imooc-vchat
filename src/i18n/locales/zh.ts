@@ -6,6 +6,9 @@ export default {
     theme: '主题颜色',
     themeGreen: '绿色',
     themePurple: '紫色',
+    themeRose: '玫瑰红',
+    themeAmber: '琥珀色',
+    themePink: '粉红色',
     selectLanguage: '选择语言...',
     general: '通用设置',
     models: '模型设置'

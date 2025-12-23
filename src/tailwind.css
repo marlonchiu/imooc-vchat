@@ -29,3 +29,45 @@
   --color-primary-800: 107 33 168;
   --color-primary-900: 88 28 135;
 }
+
+/* Rose theme */
+[data-theme="rose"] {
+  --color-primary-50: 255 241 242;
+  --color-primary-100: 255 228 230;
+  --color-primary-200: 254 205 211;
+  --color-primary-300: 253 164 175;
+  --color-primary-400: 251 113 133;
+  --color-primary-500: 244 63 94;
+  --color-primary-600: 225 29 72;
+  --color-primary-700: 190 18 60;
+  --color-primary-800: 159 18 57;
+  --color-primary-900: 136 19 55;
+}
+
+/* Amber theme */
+[data-theme="amber"] {
+  --color-primary-50: 255 251 235;
+  --color-primary-100: 254 243 199;
+  --color-primary-200: 253 230 138;
+  --color-primary-300: 252 211 77;
+  --color-primary-400: 251 191 36;
+  --color-primary-500: 245 158 11;
+  --color-primary-600: 217 119 6;
+  --color-primary-700: 180 83 9;
+  --color-primary-800: 146 64 14;
+  --color-primary-900: 120 53 15;
+}
+
+/* Pink theme */
+[data-theme="pink"] {
+  --color-primary-50: 253 242 248;
+  --color-primary-100: 252 231 243;
+  --color-primary-200: 251 207 232;
+  --color-primary-300: 249 168 212;
+  --color-primary-400: 244 114 182;
+  --color-primary-500: 236 72 153;
+  --color-primary-600: 219 39 119;
+  --color-primary-700: 190 18 60;
+  --color-primary-800: 157 23 51;
+  --color-primary-900: 131 24 39;
+}

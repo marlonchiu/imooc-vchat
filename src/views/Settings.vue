@@ -19,39 +19,6 @@
       </TabsList>
 
       <TabsContent value="general" class="space-y-6 max-w-[500px]">
-        <!-- Theme Setting -->
-        <div class="setting-item flex items-center gap-8">
-          <label class="text-sm font-medium text-gray-700 w-24">
-            {{ t('settings.theme') }}
-          </label>
-          <div class="flex gap-3">
-            <button
-              type="button"
-              :class="[
-                'px-4 py-2 rounded-md text-sm font-medium transition-colors border-2',
-                currentConfig.theme === 'green'
-                  ? 'border-primary-500 bg-primary-50 text-primary-700'
-                  : 'border-gray-200 bg-white text-gray-700 hover:border-primary-300'
-              ]"
-              @click="currentConfig.theme = 'green'"
-            >
-              {{ t('settings.themeGreen') }}
-            </button>
-            <button
-              type="button"
-              :class="[
-                'px-4 py-2 rounded-md text-sm font-medium transition-colors border-2',
-                currentConfig.theme === 'purple'
-                  ? 'border-primary-500 bg-primary-50 text-primary-700'
-                  : 'border-gray-200 bg-white text-gray-700 hover:border-primary-300'
-              ]"
-              @click="currentConfig.theme = 'purple'"
-            >
-              {{ t('settings.themePurple') }}
-            </button>
-          </div>
-        </div>
-
         <!-- Language Setting -->
         <div class="setting-item flex items-center gap-8">
           <label class="text-sm font-medium text-gray-700 w-24">
@@ -118,6 +85,16 @@
             </NumberFieldIncrement>
           </NumberFieldRoot>
         </div>
+
+        <!-- theme color setting -->
+        <div class="setting-item flex items-center gap-8">
+          <label class="text-sm font-medium text-gray-700 w-24">
+            {{ t('settings.theme') }}
+          </label>
+          <ThemeSwitcher v-model="currentConfig.theme" />
+
+          <Button class="bg-primary-700" size="small">主题色</Button>
+        </div>
       </TabsContent>
 
       <TabsContent value="models" class="space-y-4">
@@ -174,6 +151,8 @@ import { Icon } from '@iconify/vue'
 import { AppConfig } from '../types'
 
 import { useProviderStore } from '../stores/provider'
+import Button from '../components/Button.vue'
+import ThemeSwitcher from '../components/ThemeSwitcher.vue'
 import { providerConfigs, ProviderConfigItem } from '../config/providerConfig'
 import {
   SelectContent,
