@@ -1,7 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
 import fs from 'fs/promises'
 import path from 'path'
-import { CreateChatProps } from './types'
+import { CreateChatProps, ProviderName } from './types'
 import { createProvider } from './providers/createProvider'
 import { configManager } from './config'
 import { updateMenu, createContextMenu } from './menu'
@@ -59,7 +59,6 @@ export function setupIPC(mainWindow: BrowserWindow) {
     return updatedConfig
   })
 
-
   // File handling
   ipcMain.handle('copy-image-to-user-dir', async (event, sourcePath: string) => {
     const userDataPath = app.getPath('userData')
@@ -69,5 +68,19 @@ export function setupIPC(mainWindow: BrowserWindow) {
     const destPath = path.join(imagesDir, fileName)
     await fs.copyFile(sourcePath, destPath)
     return destPath
+  })
+
+  // provider连通性测试
+  ipcMain.handle('test-provider-connect', async (event, providerName: ProviderName) => {
+    try {
+      const provider = await createProvider(providerName)
+      const result = await provider.testConnection()
+      return result
+    } catch (error: any) {
+      return {
+        success: false,
+        message: `创建provider失败：${error.message}`
+      }
+    }
   })
 }

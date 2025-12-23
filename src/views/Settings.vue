@@ -142,6 +142,65 @@
                     class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500"
                   />
                 </div>
+
+                <!-- 连通性测试 -->
+                <div class="flex items-center gap-4">
+                  <label class="text-sm font-medium text-gray-700 w-24 min-w-24">{{
+                    t('settings.testConnection')
+                  }}</label>
+                  <div class="flex items-center gap-2">
+                    <Button
+                      class="shrink-0"
+                      @click="() => testConnection(provider.name)"
+                      :disabled="testingStates[provider.name]?.loading"
+                      plain
+                      size="small"
+                      :loading="testingStates[provider.name]?.loading"
+                      :icon-name="getStatusIcon(testingStates[provider.name])"
+                    >
+                      {{ testingStates[provider.name]?.loading ? t('settings.testing') : t('settings.test') }}
+                    </Button>
+                    <span
+                      v-if="testingStates[provider.name]?.message"
+                      class="text-sm break-all"
+                      :class="testingStates[provider.name]?.success ? 'text-primary-700' : 'text-red-500'"
+                    >
+                      {{ testingStates[provider.name]?.message }}
+                    </span>
+                  </div>
+                </div>
+
+                <!-- 模型列表 -->
+                <AccordionRoot type="single" collapsible v-if="hasModels(testingStates[provider.name])">
+                  <AccordionItem value="item-1" class="">
+                    <AccordionTrigger class="flex items-center justify-between w-full pt-4 text-left">
+                      <div class="flex items-center gap-2">
+                        <label class="text-sm font-medium text-gray-700 w-24">{{ t('settings.modelList') }}</label>
+                      </div>
+                      <Icon
+                        icon="radix-icons:chevron-down"
+                        class="transform transition-transform duration-200 ease-in-out data-[state=open]:rotate-180"
+                      />
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div class="items-center gap-2">
+                        <div
+                          v-for="(model, index) in testingStates[provider.name].models"
+                          :key="`${model.id}-${index}`"
+                          class="p-4 border-b last:border-b-0 hover:bg-gray-50 transition-colors flex items-center justify-between"
+                        >
+                          <span class="text-gray-800">{{ model.id }}</span>
+                          <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" class="sr-only peer" />
+                            <div
+                              class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-700"
+                            ></div>
+                          </label>
+                        </div>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </AccordionRoot>
               </div>
             </AccordionContent>
           </AccordionItem>
@@ -156,7 +215,7 @@ defineOptions({ name: 'Settings' })
 
 import { reactive, onMounted, watch, ref, computed } from 'vue'
 import { Icon } from '@iconify/vue'
-import { AppConfig, ThemeMode } from '../types'
+import { AppConfig, ThemeMode, ProviderName, ModelItem } from '../types'
 
 import { useProviderStore } from '../stores/provider'
 import Button from '../components/Button.vue'
@@ -276,10 +335,56 @@ const getProviderConfig = (providerName: string): ProviderConfigItem[] => {
 }
 
 // 更新provider配置值
-const updateProviderConfig = (providerName: string, key: string, value: string) => {
+const updateProviderConfig = (providerName: ProviderName, key: string, value: string) => {
   if (!currentConfig.providerConfigs[providerName]) {
     currentConfig.providerConfigs[providerName] = {}
   }
   currentConfig.providerConfigs[providerName][key] = value
+}
+
+// 添加测试状态管理
+type TestingState = {
+  loading: boolean
+  success?: boolean
+  message?: string
+  models?: ModelItem[]
+}
+
+const testingStates = ref<Record<ProviderName, TestingState>>({} as Record<ProviderName, TestingState>)
+
+// 测试连通性方法
+const testConnection = async (providerName: ProviderName) => {
+  // 设置加载状态
+  testingStates.value[providerName] = { loading: true }
+
+  try {
+    // 调用主进程的测试接口
+    const result = await window.electronAPI.testProviderConnect(providerName)
+    console.log('==testConnection-result', result)
+    testingStates.value[providerName] = {
+      loading: false,
+      success: result.success,
+      message: result.message,
+      models: result?.models ?? []
+    }
+  } catch (error: any) {
+    testingStates.value[providerName] = {
+      loading: false,
+      success: false,
+      message: `${t('settings.testFailed')}${error.message || '未知错误'}`
+    }
+  }
+}
+
+const getStatusIcon = (state: TestingState) => {
+  if (!state?.success && !state?.message) return 'lucide:wifi'
+  return state?.success ? 'lucide:check-circle' : 'lucide:x-circle'
+}
+
+const hasModels = (state: TestingState) => {
+  if (state?.models && state.models.length > 0) {
+    return true
+  }
+  return false
 }
 </script>

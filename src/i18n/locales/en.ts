@@ -7,7 +7,12 @@ export default {
     themeMode: 'Theme Mode',
     selectLanguage: 'Select Language...',
     general: 'General Setting',
-    models: 'Models Setting'
+    models: 'Models Setting',
+    testConnection: 'Connectivity Testing',
+    test: 'Test',
+    testing: 'Testing...',
+    testFailed: 'Test Failed: ',
+    modelList: 'Models List'
   },
   contextMenu: {
     deleteConversation: 'Delete Conversation'

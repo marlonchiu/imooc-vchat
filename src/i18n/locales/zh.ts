@@ -7,7 +7,12 @@ export default {
     themeMode: '主题模式',
     selectLanguage: '选择语言...',
     general: '通用设置',
-    models: '模型设置'
+    models: '模型设置',
+    testConnection: '连通性测试',
+    test: '测试',
+    testing: '测试中...',
+    testFailed: '测试失败：',
+    modelList: '模型列表'
   },
   contextMenu: {
     deleteConversation: '删除对话'

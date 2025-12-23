@@ -1,7 +1,7 @@
 // See the Electron documentation for details on how to use preload scripts:
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 import { ipcRenderer, contextBridge, webUtils } from 'electron'
-import { CreateChatProps, OnUpdatedCallback, AppConfig } from './types'
+import { CreateChatProps, OnUpdatedCallback, AppConfig, ProviderName, TestConnectResult } from './types'
 
 // 通过 contextBridge 仅暴露必要的 API，避免直接暴露 ipcRenderer，并转发 IPC 通信到主进程
 contextBridge.exposeInMainWorld('electronAPI', {
@@ -15,7 +15,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   onMenuOpenSettings: (callback: () => void) => ipcRenderer.on('menu-open-settings', () => callback()),
   showContextMenu: (id: number) => ipcRenderer.send('show-context-menu', id),
   onDeleteConversation: (callback: (id: number) => void) =>
-    ipcRenderer.on('delete-conversation', (_event, id) => callback(id))
+    ipcRenderer.on('delete-conversation', (_event, id) => callback(id)),
+  testProviderConnect: (providerName: ProviderName): Promise<TestConnectResult> =>
+    ipcRenderer.invoke('test-provider-connect', providerName)
 })
 
 // IPC 模式：

@@ -38,6 +38,7 @@ const createWindow = async () => {
     width: 1024,
     height: 768,
     title: 'VChat',
+    icon: path.resolve('./src/assets/icon.ico'), // 运行ico
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }

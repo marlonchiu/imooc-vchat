@@ -15,8 +15,8 @@ export interface IElectronAPI {
   // 显示指定ID的对话项的上下文菜单
   showContextMenu: (id: number) => Promise<void>
   onDeleteConversation: (callback: (id: number) => void) => void
+  testProviderConnect: (providerName: ProviderName) => Promise<TestConnectResult>
 }
-
 
 // 扩展全局 Window 类型，将 electronAPI 注入到 window 对象，使得在渲染进程中可以直接访问 electronAPI
 declare global {

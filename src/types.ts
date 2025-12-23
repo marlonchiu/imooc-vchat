@@ -89,3 +89,19 @@ export const DEFAULT_CONFIG: AppConfig = {
   themeMode: 'system',
   providerConfigs: {}
 }
+
+export type ProviderName = keyof AppConfig['providerConfigs']
+
+// 模型列表 item
+export interface ModelItem {
+  id: string
+  object: string
+  created?: number
+  owned_by: string
+}
+
+export interface TestConnectResult {
+  success: boolean
+  message: string
+  models: ModelItem[]
+}
