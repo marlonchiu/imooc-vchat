@@ -1,5 +1,5 @@
 <template>
-  <div class="theme-switcher dark:bg-gray-800 rounded-lg">
+  <div class="theme-color-switcher dark:bg-gray-800 rounded-lg">
     <!-- 主题色选择器 -->
     <div v-if="availableThemes.length > 0" class="flex gap-2">
       <button
@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-defineOptions({ name: 'ThemeSwitcher' })
+defineOptions({ name: 'ThemeColorSwitcher' })
 
 import { computed } from 'vue'
 

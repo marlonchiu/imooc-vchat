@@ -1,10 +1,12 @@
 <template>
   <div
     v-if="conversation"
-    class="h-[10%] shadow-sm bg-gray-200 border-b border-gray-300 flex items-center px-3 justify-between"
+    class="h-[10%] shadow-sm bg-gray-200 dark:bg-gray-700 border-b border-gray-300 dark:border-gray-600 flex items-center px-3 justify-between"
   >
-    <h3 class="font-semibold text-gray-900">{{ conversation.title }}</h3>
-    <span class="text-sm text-gray-500">{{ dayjs(conversation.updatedAt).format('YYYY-MM-DD HH:mm:ss') }}</span>
+    <h3 class="font-semibold text-gray-900 dark:text-white">{{ conversation.title }}</h3>
+    <span class="text-sm text-gray-500 dark:text-gray-100">{{
+      dayjs(conversation.updatedAt).format('YYYY-MM-DD HH:mm:ss')
+    }}</span>
   </div>
   <div class="w-[80%] mx-auto h-[75%] overflow-y-auto pt-2">
     <MessageList :messages="filteredMessages" ref="messageListRef" />

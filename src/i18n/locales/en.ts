@@ -3,12 +3,8 @@ export default {
     title: 'Settings',
     language: 'Language',
     fontSize: 'Font Size',
-    theme: 'Theme Color',
-    themeGreen: 'Green',
-    themePurple: 'Purple',
-    themeRose: 'Rose',
-    themeAmber: 'Amber',
-    themePink: 'Pink',
+    themeColor: 'Theme Color',
+    themeMode: 'Theme Mode',
     selectLanguage: 'Select Language...',
     general: 'General Setting',
     models: 'Models Setting'
@@ -23,6 +19,16 @@ export default {
     newChat: 'New Chat',
     appSettings: 'Settings',
     inputPlaceholder: 'Please enter content'
+  },
+  theme: {
+    light: 'Light',
+    dark: 'Dark',
+    system: 'System',
+    green: 'Green',
+    purple: 'Purple',
+    rose: 'Rose',
+    amber: 'Amber',
+    pink: 'Pink'
   },
   menu: {
     app: {

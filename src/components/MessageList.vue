@@ -3,7 +3,7 @@
     <div class="message-item mb-3" v-for="message in messages" :key="message.id">
       <div class="flex" :class="{ 'justify-end': message.type === 'question' }">
         <div>
-          <div class="text-sm text-gray-500 mb-2" :class="{ 'text-right': message.type === 'question' }">
+          <div class="text-sm text-gray-500 dark:text-gray-400 mb-2" :class="{ 'text-right': message.type === 'question' }">
             {{ dayjs(message.createdAt).format('YYYY-MM-DD HH:mm:ss') }}
           </div>
           <div class="message-question bg-primary-700 text-white p-2 rounded-md" v-if="message.type === 'question'">
@@ -19,8 +19,8 @@
             v-else
             class="message-question p-2 rounded-md"
             :class="{
-              'bg-red-100 text-red-700': message.status === 'error',
-              'bg-gray-200 text-gray-700': message.status !== 'error'
+              'bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300': message.status === 'error',
+              'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-white': message.status !== 'error'
             }"
           >
             <template v-if="message.status === 'loading'">
@@ -32,7 +32,7 @@
             <!-- prose-pre:p-0 去除代码块的边距 -->
             <div
               v-else
-              class="prose prose-slate prose-headings:my-2 prose-li:my-0 prose-ul:my-1 prose-p:my-1 prose-pre:p-0 prose-hr:m-4"
+              class="prose prose-slate dark:prose-invert prose-headings:my-2 prose-li:my-0 prose-ul:my-1 prose-p:my-1 prose-pre:p-0 prose-hr:m-4"
             >
               <vue-markdown :source="message.content" :plugins="plugins" />
             </div>

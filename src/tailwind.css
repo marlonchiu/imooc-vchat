@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Font size base */
+:root {
+  --font-size-base: 14px;
+}
+
+html {
+  font-size: var(--font-size-base);
+}
+
 /* Default theme colors - green */
 :root {
   --color-primary-50: 240 253 244;
@@ -70,4 +79,89 @@
   --color-primary-700: 190 18 60;
   --color-primary-800: 157 23 51;
   --color-primary-900: 131 24 39;
+}
+
+/* Dark mode colors */
+[data-theme-mode="dark"],
+[data-theme-mode="system"] {
+  --color-bg-primary: 17 24 39;
+  --color-bg-secondary: 31 41 55;
+  --color-bg-tertiary: 55 65 81;
+  --color-text-primary: 249 250 251;
+  --color-text-secondary: 209 213 219;
+  --color-border: 75 85 99;
+}
+
+/* System dark mode - only apply when system prefers dark */
+@media (prefers-color-scheme: dark) {
+  [data-theme-mode="system"] body {
+    background-color: rgb(var(--color-bg-primary));
+    color: rgb(var(--color-text-primary));
+  }
+
+  [data-theme-mode="system"] .bg-white {
+    background-color: rgb(var(--color-bg-secondary)) !important;
+    color: rgb(var(--color-text-primary)) !important;
+  }
+
+  [data-theme-mode="system"] .bg-gray-200 {
+    background-color: rgb(var(--color-bg-tertiary)) !important;
+  }
+
+  [data-theme-mode="system"] .text-gray-500,
+  [data-theme-mode="system"] .text-gray-600,
+  [data-theme-mode="system"] .text-gray-700,
+  [data-theme-mode="system"] .text-gray-800 {
+    color: rgb(var(--color-text-secondary)) !important;
+  }
+
+  [data-theme-mode="system"] .border,
+  [data-theme-mode="system"] .border-gray-200,
+  [data-theme-mode="system"] .border-gray-300 {
+    border-color: rgb(var(--color-border)) !important;
+  }
+
+  [data-theme-mode="system"] .bg-gray-100 {
+    background-color: rgb(var(--color-bg-tertiary)) !important;
+  }
+
+  [data-theme-mode="system"] .bg-gray-50 {
+    background-color: rgb(var(--color-bg-secondary)) !important;
+  }
+}
+
+/* Explicit dark mode */
+[data-theme-mode="dark"] body {
+  background-color: rgb(var(--color-bg-primary));
+  color: rgb(var(--color-text-primary));
+}
+
+[data-theme-mode="dark"] .bg-white {
+  background-color: rgb(var(--color-bg-secondary)) !important;
+  color: rgb(var(--color-text-primary)) !important;
+}
+
+[data-theme-mode="dark"] .bg-gray-200 {
+  background-color: rgb(var(--color-bg-tertiary)) !important;
+}
+
+[data-theme-mode="dark"] .text-gray-500,
+[data-theme-mode="dark"] .text-gray-600,
+[data-theme-mode="dark"] .text-gray-700,
+[data-theme-mode="dark"] .text-gray-800 {
+  color: rgb(var(--color-text-secondary)) !important;
+}
+
+[data-theme-mode="dark"] .border,
+[data-theme-mode="dark"] .border-gray-200,
+[data-theme-mode="dark"] .border-gray-300 {
+  border-color: rgb(var(--color-border)) !important;
+}
+
+[data-theme-mode="dark"] .bg-gray-100 {
+  background-color: rgb(var(--color-bg-tertiary)) !important;
+}
+
+[data-theme-mode="dark"] .bg-gray-50 {
+  background-color: rgb(var(--color-bg-secondary)) !important;
 }

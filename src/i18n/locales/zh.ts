@@ -3,12 +3,8 @@ export default {
     title: '应用设置',
     language: '语言设置',
     fontSize: '字体大小',
-    theme: '主题颜色',
-    themeGreen: '绿色',
-    themePurple: '紫色',
-    themeRose: '玫瑰红',
-    themeAmber: '琥珀色',
-    themePink: '粉红色',
+    themeColor: '主题颜色',
+    themeMode: '主题模式',
     selectLanguage: '选择语言...',
     general: '通用设置',
     models: '模型设置'
@@ -23,6 +19,16 @@ export default {
     newChat: '新建聊天',
     appSettings: '应用设置',
     inputPlaceholder: '请输入内容'
+  },
+  theme: {
+    light: '浅色',
+    dark: '深色',
+    system: '跟随系统',
+    green: '绿色',
+    purple: '紫色',
+    rose: '玫瑰红',
+    amber: '琥珀色',
+    pink: '粉红色'
   },
   menu: {
     app: {

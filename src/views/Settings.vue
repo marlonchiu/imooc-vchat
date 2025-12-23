@@ -19,6 +19,14 @@
       </TabsList>
 
       <TabsContent value="general" class="space-y-6 max-w-[500px]">
+        <!-- Theme Mode Setting -->
+        <div class="setting-item flex items-center gap-8">
+          <label class="text-sm font-medium text-gray-700 w-24">
+            {{ t('settings.themeMode') }}
+          </label>
+          <ThemeModeSwitcher v-model="currentConfig.themeMode" />
+        </div>
+
         <!-- Language Setting -->
         <div class="setting-item flex items-center gap-8">
           <label class="text-sm font-medium text-gray-700 w-24">
@@ -67,7 +75,7 @@
           <label class="text-sm font-medium text-gray-700 w-24">
             {{ t('settings.fontSize') }}
           </label>
-          <NumberFieldRoot v-model="currentConfig.fontSize" class="inline-flex w-[100px]">
+          <NumberFieldRoot v-model="clampedFontSize" class="inline-flex w-[100px]">
             <NumberFieldDecrement
               class="px-2 border border-r-0 border-gray-300 rounded-l-md hover:bg-gray-100 focus:outline-none"
             >
@@ -89,11 +97,11 @@
         <!-- theme color setting -->
         <div class="setting-item flex items-center gap-8">
           <label class="text-sm font-medium text-gray-700 w-24">
-            {{ t('settings.theme') }}
+            {{ t('settings.themeColor') }}
           </label>
-          <ThemeSwitcher v-model="currentConfig.theme" />
+          <ThemeColorSwitcher v-model="currentConfig.theme" />
 
-          <Button class="bg-primary-700" size="small">主题色</Button>
+          <Button class="bg-primary-700" size="small">{{ t('settings.themeColor') }}</Button>
         </div>
       </TabsContent>
 
@@ -148,11 +156,12 @@ defineOptions({ name: 'Settings' })
 
 import { reactive, onMounted, watch, ref, computed } from 'vue'
 import { Icon } from '@iconify/vue'
-import { AppConfig } from '../types'
+import { AppConfig, ThemeMode } from '../types'
 
 import { useProviderStore } from '../stores/provider'
 import Button from '../components/Button.vue'
-import ThemeSwitcher from '../components/ThemeSwitcher.vue'
+import ThemeColorSwitcher from '../components/ThemeColorSwitcher.vue'
+import ThemeModeSwitcher from '../components/ThemeModeSwitcher.vue'
 import { providerConfigs, ProviderConfigItem } from '../config/providerConfig'
 import {
   SelectContent,
@@ -189,16 +198,29 @@ const providers = computed(() => providerStore.items)
 
 const currentConfig = reactive<AppConfig>({
   language: 'zh',
-  fontSize: 14,
+  fontSize: 16,
   theme: 'green',
+  themeMode: 'system',
   providerConfigs: {}
+})
+
+// 字体大小限制在 12-20px
+const clampedFontSize = computed({
+  get: () => currentConfig.fontSize,
+  set: (val) => {
+    currentConfig.fontSize = Math.max(12, Math.min(20, val))
+  }
 })
 
 onMounted(async () => {
   const config = await window.electronAPI.getConfig()
   Object.assign(currentConfig, config)
   // 应用主题色
-  applyTheme(currentConfig.theme)
+  applyThemeColor(currentConfig.theme)
+  // 应用主题模式
+  applyThemeMode(currentConfig.themeMode)
+  // 应用字体大小
+  applyFontSize(currentConfig.fontSize)
 })
 
 // 监听配置变化并自动保存
@@ -209,20 +231,35 @@ watch(
       language: newConfig.language,
       fontSize: newConfig.fontSize,
       theme: newConfig.theme,
+      themeMode: newConfig.themeMode,
       providerConfigs: JSON.parse(JSON.stringify(newConfig.providerConfigs))
     }
     await window.electronAPI.updateConfig(configToSave)
     // 更新界面语言
     setI18nLanguage(newConfig.language)
     // 更新主题色
-    applyTheme(newConfig.theme)
+    applyThemeColor(newConfig.theme)
+    // 更新主题模式
+    applyThemeMode(newConfig.themeMode)
+    // 更新字体大小
+    applyFontSize(newConfig.fontSize)
   },
   { deep: true }
 )
 
 // 应用主题色
-const applyTheme = (theme: 'green' | 'purple') => {
+const applyThemeColor = (theme: string) => {
   document.documentElement.setAttribute('data-theme', theme)
+}
+
+// 应用主题模式 (light/dark/system)
+const applyThemeMode = (mode: ThemeMode) => {
+  document.documentElement.setAttribute('data-theme-mode', mode)
+}
+
+// 应用字体大小
+const applyFontSize = (size: number) => {
+  document.documentElement.style.fontSize = `${size}px`
 }
 
 // 获取provider对应的配置项

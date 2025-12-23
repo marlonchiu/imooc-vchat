@@ -1,5 +1,7 @@
 export type ButtonColor = 'green' | 'purple' | 'rose' | 'amber' | 'pink'
 
+export type ThemeMode = 'light' | 'dark' | 'system'
+
 export interface ConversationProps {
   id: number
   title: string
@@ -76,12 +78,14 @@ export interface AppConfig {
   language: 'zh' | 'en'
   fontSize: number
   theme: ButtonColor
+  themeMode: ThemeMode
   providerConfigs: Record<string, Record<string, string>>
 }
 
 export const DEFAULT_CONFIG: AppConfig = {
   language: 'zh',
-  fontSize: 14,
+  fontSize: 16,
   theme: 'green',
+  themeMode: 'system',
   providerConfigs: {}
 }

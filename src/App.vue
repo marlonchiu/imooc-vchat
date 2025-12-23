@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center justify-between h-screen">
-    <div class="bg-gray-200 w-[300px] h-full border-r border-gray-300">
+    <div class="bg-gray-200 dark:bg-gray-800 w-[300px] h-full border-r border-gray-300 dark:border-gray-700">
       <div class="h-[90%] overflow-y-auto">
         <ConversationList :items="items" />
       </div>
@@ -41,9 +41,14 @@ const providerStore = useProviderStore()
 onMounted(async () => {
   await initI18n()
 
-  // 应用主题色
+  // 读取配置并应用
   const config = await window.electronAPI.getConfig()
+  // 应用主题色
   document.documentElement.setAttribute('data-theme', config.theme || 'green')
+  // 应用主题模式 (light/dark/system)
+  document.documentElement.setAttribute('data-theme-mode', config.themeMode || 'system')
+  // 应用字体大小
+  document.documentElement.style.fontSize = `${config.fontSize || 16}px`
 
   await initProviders()
   // 获取初始化需要的数据
