@@ -15,9 +15,31 @@ dotenv.config()
 const config: ForgeConfig = {
   // 基础打包配置
   packagerConfig: {
-    name: 'VChat',
-    icon: './src/assets/icon',
-    asar: true // 将源码压缩为 asar档案
+    name: 'VChat', // 应用程序的名称
+    icon: './src/assets/icon', // 应用程序的图标路径
+    asar: true, // 将源码压缩为 asar档案
+    overwrite: true, // 是否覆盖已存在的打包文件
+    ignore: [
+      // 不需要打包的文件和文件夹的路径列表
+      // 开发文件和目录
+      /^\/\.(idea|git|vscode)(\/|$)/,
+      /^\/src\//, // 源码（已编译）
+
+      // 配置文件
+      /^\/\.gitignore/,
+
+      // 文档和日志
+      /\.(md|markdown|log)$/,
+
+      // 环境文件
+      /\.(env|env\.local|env\.\w+)$/,
+
+      // 源码文件（已编译）
+      /\.(ts|tsx|js\.map)$/
+
+      // node_modules 过滤（首次打包时保留完整 node_modules，确认运行正常后再逐步添加忽略规则）
+      // /^\/node_modules\/(?!(electron|vue)\/).*/,
+    ]
   },
   rebuildConfig: {},
   // 制作安装包的工具
@@ -33,7 +55,8 @@ const config: ForgeConfig = {
       iconUrl: 'file://' + path.resolve('./src/assets/icon.ico'), // 使用本地图标
       // iconUrl: 'https://raw.githubusercontent.com/your-repo/vchat/main/assets/icon.ico', // 远程图标URL
       // 自定义安装程序选项
-      setupExe: 'VChat-Setup.exe' // 安装程序名称
+      setupExe: 'VChat-Setup.exe', // 安装程序名称
+      // noMsi: true
     }),
     // 制作 macOS 安装包
     new MakerDMG({
